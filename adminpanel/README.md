@@ -111,7 +111,7 @@ adminpanel/
 
 - All images are uploaded to appropriate directories
 - Product images: `assets/images/products/`
-- Banner images: `assets/images/demoes/demo7/banners/`
+- Banner images: `assets/images/banners/`
 - Placeholder images are used when no image is uploaded
 - All changes are immediately reflected on the frontend
 

@@ -46,7 +46,7 @@ if (isset($_GET['action'])) {
 		if (isset($_SESSION['cart'][$product_id])) {
 			unset($_SESSION['cart'][$product_id]);
 		}
-		header("Location: cart.php");
+		header("Location: cart");
 		exit;
 	}
 
@@ -60,7 +60,7 @@ if (isset($_GET['action'])) {
 				unset($_SESSION['cart'][$product_id]);
 			}
 		}
-		header("Location: cart.php");
+		header("Location: cart");
 		exit;
 	}
 }
@@ -135,20 +135,12 @@ $total = $subtotal + $shipping;
 	<link rel="stylesheet" href="assets/css/demo7.min.css">
 	<link rel="stylesheet" href="assets/css/style.min.css">
 	<link rel="stylesheet" type="text/css" href="assets/vendor/fontawesome-free/css/all.min.css">
+	<link rel="stylesheet" href="assets/css/optimizations.css">
 </head>
 
 <body>
 	<div class="page-wrapper">
-		<div class="top-notice text-white">
-			<div class="container text-center">
-				<h5 class="d-inline-block mb-0">🔥 <b>MEGA SALE</b> - Up to 70% OFF!</h5>
-				<a href="about.php" class="category">ABOUT US</a>
-				<a href="shop.php" class="category ml-2 mr-3">SHOP NOW</a>
-				<small>* Free Shipping on Orders ₹499+</small>
-				<button title="Close (Esc)" type="button" class="mfp-close">×</button>
-			</div><!-- End .container -->
-		</div><!-- End .top-notice -->
-
+		<?php include "common/top-notice.php"; ?>
 		<?php include "common/header.php"; ?>
 
 		<main class="main">
@@ -207,7 +199,7 @@ $total = $subtotal + $shipping;
 												<tr class="product-row">
 													<td>
 														<figure class="product-image-container">
-															<a href="product.php?slug=<?php echo htmlspecialchars($item['slug']); ?>"
+															<a href="<?php echo getProductUrl($item['slug']); ?>"
 																class="product-image">
 																<img src="<?php echo htmlspecialchars($item['image']); ?>"
 																	alt="<?php echo htmlspecialchars($item['name']); ?>">

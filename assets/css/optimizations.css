@@ -2,6 +2,69 @@
    MySmartSCart - Performance Optimizations CSS
    ===================================================== */
 
+/* =====================================================
+   CUSTOM THEME COLORS - Royal Blue Top Notice Bar
+   ===================================================== */
+.top-notice {
+    background: linear-gradient(135deg, #1a237e 0%, #283593 50%, #3949ab 100%) !important;
+}
+
+.top-notice .category {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.top-notice .category:hover {
+    background: rgba(255, 255, 255, 0.3) !important;
+}
+
+.top-notice .mfp-close {
+    color: #fff !important;
+}
+
+.top-notice .mfp-close:hover {
+    color: #ffeb3b !important;
+}
+
+/* =====================================================
+   HEADER TOP BAR - Orange/Saffron Color
+   ===================================================== */
+.header-top {
+    background: #f68b28 !important;
+    color: #fff !important;
+}
+
+.header-top a {
+    color: #fff !important;
+}
+
+.header-top a:hover {
+    color: #ffe0b2 !important;
+}
+
+.header-top .separator {
+    background: rgba(255, 255, 255, 0.3) !important;
+}
+
+.header-top .dropdown-toggle::after {
+    border-top-color: #fff !important;
+}
+
+.header-top .dropdown-menu {
+    background: #f68b28;
+    border: none;
+}
+
+.header-top .dropdown-menu a {
+    color: #fff !important;
+}
+
+.header-top .dropdown-menu a:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
 /* Lazy Loading Image Styles */
 .lazy {
     opacity: 0;

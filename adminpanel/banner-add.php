@@ -15,12 +15,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Handle image upload
     $image = '';
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-        $upload_dir = '../assets/images/demoes/demo7/banners/';
+        $upload_dir = '../assets/images/banners/';
         $file_name = time() . '_' . basename($_FILES['image']['name']);
         $target_file = $upload_dir . $file_name;
         
         if (move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
-            $image = 'assets/images/demoes/demo7/banners/' . $file_name;
+            $image = 'assets/images/banners/' . $file_name;
         }
     }
     

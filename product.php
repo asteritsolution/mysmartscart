@@ -1,8 +1,28 @@
 <?php 
 include "config.php";
 
-// Get product slug from URL
-$product_slug = isset($_GET['slug']) ? mysqli_real_escape_string($conn, $_GET['slug']) : '';
+// Get product slug from URL (supports both old and new SEO-friendly URLs)
+// Old format: product.php?slug=apple-cider-vinegar
+// New format: product/apple-cider-vinegar
+$product_slug = '';
+
+// Check if slug is in GET parameter (old format)
+if (isset($_GET['slug']) && !empty($_GET['slug'])) {
+    $product_slug = mysqli_real_escape_string($conn, $_GET['slug']);
+} 
+// Check if slug is in PATH_INFO (new SEO-friendly format)
+elseif (isset($_SERVER['PATH_INFO']) && !empty($_SERVER['PATH_INFO'])) {
+    $path = trim($_SERVER['PATH_INFO'], '/');
+    $product_slug = mysqli_real_escape_string($conn, $path);
+}
+// Check REQUEST_URI for SEO-friendly format
+elseif (isset($_SERVER['REQUEST_URI'])) {
+    $uri = $_SERVER['REQUEST_URI'];
+    // Extract slug from /mysmartscart/product/slug format
+    if (preg_match('#/product/([a-z0-9-]+)/?$#i', $uri, $matches)) {
+        $product_slug = mysqli_real_escape_string($conn, $matches[1]);
+    }
+}
 
 // Fetch product details from database
 $product = null;
@@ -128,7 +148,7 @@ if (!empty($product_slug)) {
 
 // If product not found, redirect to shop
 if (!$product || !isset($product['name']) || empty($product['name'])) {
-    header("Location: shop.php");
+    header("Location: shop");
     exit;
 }
 ?>
@@ -139,6 +159,15 @@ if (!$product || !isset($product['name']) || empty($product['name'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Base URL for SEO-friendly URLs - Fixes CSS/JS path issues -->
+    <?php 
+    // Include site settings for base URL helper
+    if (!function_exists('getBaseUrl')) {
+        require_once __DIR__ . '/includes/site-settings.php';
+    }
+    ?>
+    <base href="<?php echo getBaseUrl(); ?>">
 
     <title><?php echo htmlspecialchars($product['name']); ?> - MySmartSCart</title>
 
@@ -171,21 +200,12 @@ if (!$product || !isset($product['name']) || empty($product['name'])) {
     <!-- Main CSS File -->
     <link rel="stylesheet" href="assets/css/demo7.min.css">
     <link rel="stylesheet" type="text/css" href="assets/vendor/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/optimizations.css">
 </head>
 
 <body>
     <div class="page-wrapper">
-        <div class="top-notice text-white">
-            <div class="container text-center">
-                <h5 class="d-inline-block mb-0">🔥 <b>MEGA SALE</b> - Up to 70% OFF!</h5>
-                <a href="about.php" class="category">ABOUT US</a>
-                <a href="shop.php" class="category ml-2 mr-3">SHOP NOW</a>
-                <small>* Free Shipping on Orders ₹499+</small>
-                <button title="Close (Esc)" type="button" class="mfp-close">×</button>
-            </div>
-            <!-- End .container -->
-        </div>
-        <!-- End .top-notice -->
+        <?php include "common/top-notice.php"; ?>
 
         <?php include "common/header.php"; ?>
 
@@ -257,7 +277,7 @@ if (!$product || !isset($product['name']) || empty($product['name'])) {
                                     $prev_image = !empty($prev_product['image']) ? $prev_product['image'] : 'assets/images/products/placeholder.webp';
                                 ?>
                                 <div class="product-prev">
-                                    <a href="product.php?slug=<?php echo htmlspecialchars($prev_product['slug']); ?>">
+                                    <a href="<?php echo getProductUrl($prev_product['slug']); ?>">
                                         <span class="product-link"></span>
                                         <span class="product-popup">
                                             <span class="box-content">
@@ -275,7 +295,7 @@ if (!$product || !isset($product['name']) || empty($product['name'])) {
                                     $next_image = !empty($next_product['image']) ? $next_product['image'] : 'assets/images/products/placeholder.webp';
                                 ?>
                                 <div class="product-next">
-                                    <a href="product.php?slug=<?php echo htmlspecialchars($next_product['slug']); ?>">
+                                    <a href="<?php echo getProductUrl($next_product['slug']); ?>">
                                         <span class="product-link"></span>
                                         <span class="product-popup">
                                             <span class="box-content">
@@ -323,7 +343,7 @@ if (!$product || !isset($product['name']) || empty($product['name'])) {
                                 <?php } ?>
 
                                 <?php if (!empty($product['category_name'])) { 
-                                    $category_link = !empty($product['category_slug']) ? "category.php?slug=" . htmlspecialchars($product['category_slug']) : "shop.php";
+                                    $category_link = !empty($product['category_slug']) ? getCategoryUrl($product['category_slug']) : "shop.php";
                                 ?>
                                 <li>
                                     CATEGORY: <strong><a href="<?php echo $category_link; ?>" class="product-category"><?php echo htmlspecialchars($product['category_name']); ?></a></strong>
@@ -418,7 +438,7 @@ if (!$product || !isset($product['name']) || empty($product['name'])) {
                                 $is_in_wishlist = isset($_SESSION['wishlist']) && isset($_SESSION['wishlist'][$product['id']]);
                                 $wishlist_class = $is_in_wishlist ? 'added' : '';
                                 $wishlist_text = $is_in_wishlist ? 'Remove from Wishlist' : 'Add to Wishlist';
-                                $wishlist_url = "wishlist-handler.php?action=" . ($is_in_wishlist ? 'remove' : 'add') . "&id=" . $product['id'] . "&redirect=" . urlencode("product.php?slug=" . $product['slug']);
+                                $wishlist_url = "wishlist-handler.php?action=" . ($is_in_wishlist ? 'remove' : 'add') . "&id=" . $product['id'] . "&redirect=" . urlencode(getProductUrl($product['slug']));
                                 ?>
                                 <a href="<?php echo $wishlist_url; ?>" class="btn-icon-wish add-wishlist <?php echo $wishlist_class; ?>" title="<?php echo $wishlist_text; ?>" data-product-id="<?php echo $product['id']; ?>"><i
                                         class="icon-wishlist-2"></i><span><?php echo $wishlist_text; ?></span></a>
@@ -603,7 +623,7 @@ if (!$product || !isset($product['name']) || empty($product['name'])) {
                         ?>
                         <div class="product-default left-details">
                             <figure>
-                                <a href="product.php?slug=<?php echo htmlspecialchars($related['slug']); ?>">
+                                <a href="<?php echo getProductUrl($related['slug']); ?>">
                                     <img src="<?php echo htmlspecialchars($related_image); ?>" alt="<?php echo htmlspecialchars($related['name']); ?>"
                                         width="300" height="300">
                                     <img src="<?php echo htmlspecialchars($related_image); ?>" alt="<?php echo htmlspecialchars($related['name']); ?>"
@@ -631,7 +651,7 @@ if (!$product || !isset($product['name']) || empty($product['name'])) {
                                 </div>
                                 <?php } ?>
                                 <h3 class="product-title">
-                                    <a href="product.php?slug=<?php echo htmlspecialchars($related['slug']); ?>"><?php echo htmlspecialchars($related['name']); ?></a>
+                                    <a href="<?php echo getProductUrl($related['slug']); ?>"><?php echo htmlspecialchars($related['name']); ?></a>
                                 </h3>
                                 <div class="price-box">
                                     <?php if ($related_sale_price) { ?>
@@ -647,7 +667,7 @@ if (!$product || !isset($product['name']) || empty($product['name'])) {
                                             class="icon-shopping-cart"></i><span>VIEW PRODUCT</span></a>
                                     <?php 
                                     $related_in_wishlist = isset($_SESSION['wishlist']) && isset($_SESSION['wishlist'][$related['id']]);
-                                    $related_wishlist_url = "wishlist-handler.php?action=" . ($related_in_wishlist ? 'remove' : 'add') . "&id=" . $related['id'] . "&redirect=" . urlencode("product.php?slug=" . $related['slug']);
+                                    $related_wishlist_url = "wishlist-handler.php?action=" . ($related_in_wishlist ? 'remove' : 'add') . "&id=" . $related['id'] . "&redirect=" . urlencode(getProductUrl($related['slug']));
                                     ?>
                                     <a href="<?php echo $related_wishlist_url; ?>" class="btn-icon-wish <?php echo $related_in_wishlist ? 'added' : ''; ?>" title="<?php echo $related_in_wishlist ? 'Remove from Wishlist' : 'Add to Wishlist'; ?>"><i
                                             class="icon-heart"></i></a>
@@ -678,14 +698,14 @@ if (!$product || !isset($product['name']) || empty($product['name'])) {
                             ?>
                         <div class="product-default left-details product-widget">
                             <figure>
-                                    <a href="product.php?slug=<?php echo htmlspecialchars($p['slug']); ?>">
+                                    <a href="<?php echo getProductUrl($p['slug']); ?>">
                                         <img src="<?php echo htmlspecialchars($p_image); ?>" width="74" height="74" alt="<?php echo htmlspecialchars($p['name']); ?>">
                                         <img src="<?php echo htmlspecialchars($p_image); ?>" width="74" height="74" alt="<?php echo htmlspecialchars($p['name']); ?>">
                                 </a>
                             </figure>
                             <div class="product-details">
                                     <h3 class="product-title">
-                                        <a href="product.php?slug=<?php echo htmlspecialchars($p['slug']); ?>"><?php echo htmlspecialchars($p['name']); ?></a>
+                                        <a href="<?php echo getProductUrl($p['slug']); ?>"><?php echo htmlspecialchars($p['name']); ?></a>
                                 </h3>
                                 <div class="price-box">
                                         <?php if ($p_sale_price) { ?>

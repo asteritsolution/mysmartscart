@@ -1,14 +1,36 @@
 <?php 
 session_start();
 include "config.php"; 
+require_once "includes/site-settings.php";
 
 // Initialize wishlist if not exists
 if (!isset($_SESSION['wishlist'])) {
     $_SESSION['wishlist'] = [];
 }
 
-// Get category filter from URL
-$category_slug = isset($_GET['category']) ? mysqli_real_escape_string($conn, $_GET['category']) : '';
+// Get dynamic settings
+$site_name = getSetting('site_name', 'MySmartSCart');
+$site_favicon = getSetting('site_favicon', 'assets/images/icons/favicon.png');
+$header_top_text = getSetting('header_top_text', '🔥 <b>MEGA SALE</b> - Up to 70% OFF!');
+
+// Get category filter from URL (supports both old and new SEO-friendly URLs)
+// Old format: shop.php?category=electronics
+// New format: category/electronics or shop/electronics
+$category_slug = '';
+
+// Check if category is in GET parameter (old format)
+if (isset($_GET['category']) && !empty($_GET['category'])) {
+    $category_slug = mysqli_real_escape_string($conn, $_GET['category']);
+} 
+// Check REQUEST_URI for SEO-friendly format
+elseif (isset($_SERVER['REQUEST_URI'])) {
+    $uri = $_SERVER['REQUEST_URI'];
+    // Extract slug from /mysmartscart/category/slug or /mysmartscart/shop/slug format
+    if (preg_match('#/(?:category|shop)/([a-z0-9-]+)/?$#i', $uri, $matches)) {
+        $category_slug = mysqli_real_escape_string($conn, $matches[1]);
+    }
+}
+
 $category_filter = '';
 $category_name = 'All Products';
 
@@ -56,14 +78,22 @@ $products_result = mysqli_query($conn, $products_query);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Shop - MySmartSCart | Best Deals on Trending Products</title>
+    <!-- Base URL for SEO-friendly URLs - Fixes CSS/JS path issues -->
+    <?php 
+    if (!function_exists('getBaseUrl')) {
+        require_once __DIR__ . '/includes/site-settings.php';
+    }
+    ?>
+    <base href="<?php echo getBaseUrl(); ?>">
 
-    <meta name="keywords" content="MySmartSCart, Shop, Online Shopping, Best Deals, Electronics, Fashion, Gadgets" />
-    <meta name="description" content="Shop the latest trending products at MySmartSCart. Discover amazing deals on electronics, fashion, home essentials & more with fast delivery across India!">
-    <meta name="author" content="MySmartSCart.in">
+    <title>Shop - <?php echo htmlspecialchars($site_name); ?> | Best Deals on Trending Products</title>
+
+    <meta name="keywords" content="<?php echo htmlspecialchars($site_name); ?>, Shop, Online Shopping, Best Deals, Electronics, Fashion, Gadgets" />
+    <meta name="description" content="Shop the latest trending products at <?php echo htmlspecialchars($site_name); ?>. Discover amazing deals on electronics, fashion, home essentials & more with fast delivery across India!">
+    <meta name="author" content="<?php echo htmlspecialchars($site_name); ?>">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="assets/images/icons/favicon.png">
+    <link rel="icon" type="image/x-icon" href="<?php echo htmlspecialchars($site_favicon); ?>">
 
 
     <script>
@@ -94,24 +124,13 @@ $products_result = mysqli_query($conn, $products_query);
 
 <body>
     <div class="page-wrapper">
-        <div class="top-notice text-white">
-            <div class="container text-center">
-                <h5 class="d-inline-block mb-0">🔥 <b>MEGA SALE</b> - Up to 70% OFF!</h5>
-                <a href="about.php" class="category">ABOUT US</a>
-                <a href="shop.php" class="category ml-2 mr-3">SHOP NOW</a>
-                <small>* Free Shipping on Orders ₹499+</small>
-                <button title="Close (Esc)" type="button" class="mfp-close">×</button>
-            </div>
-            <!-- End .container -->
-        </div>
-        <!-- End .top-notice -->
-
+        <?php include "common/top-notice.php"; ?>
         <?php include "common/header.php"; ?>
         <!-- End .header -->
 
         <main class="main">
             <div class="category-banner"
-                style="background-image: url(assets/images/demoes/demo7/banners/banner-top-2.jpg)">
+                style="background-image: url(assets/images/products/placeholder.webp)">
                 <div class="container">
                     <div class="promo-content d-sm-flex align-items-center">
                         <div>
@@ -237,8 +256,8 @@ $products_result = mysqli_query($conn, $products_query);
                                     $price = number_format($product['price'], 2);
                                     $sale_price = !empty($product['sale_price']) ? number_format($product['sale_price'], 2) : null;
                                     
-                                    // Product link
-                                    $product_link = "product.php?slug=" . htmlspecialchars($product['slug']);
+                                    // Product link (SEO-friendly)
+                                    $product_link = getProductUrl($product['slug']);
                                     
                                     // Category links
                                     $category_links = '';
@@ -249,7 +268,7 @@ $products_result = mysqli_query($conn, $products_query);
                                         foreach ($category_names as $idx => $cat_name) {
                                             $cat_slug = isset($category_slugs[$idx]) ? trim($category_slugs[$idx]) : '';
                                             if (!empty($cat_slug)) {
-                                                $cat_links_array[] = '<a href="shop.php?category=' . htmlspecialchars($cat_slug) . '" class="product-category">' . htmlspecialchars(trim($cat_name)) . '</a>';
+                                                $cat_links_array[] = '<a href="' . getCategoryUrl($cat_slug) . '" class="product-category">' . htmlspecialchars(trim($cat_name)) . '</a>';
                                             }
                                         }
                                         $category_links = implode(', ', $cat_links_array);
@@ -420,7 +439,7 @@ $products_result = mysqli_query($conn, $products_query);
                                             if (mysqli_num_rows($sidebar_cats_result) > 0) {
                                                 while ($cat = mysqli_fetch_assoc($sidebar_cats_result)) {
                                                     $is_active = ($category_slug == $cat['slug']) ? 'active' : '';
-                                                    $cat_link = "shop.php?category=" . htmlspecialchars($cat['slug']);
+                                                    $cat_link = getCategoryUrl($cat['slug']);
                                             ?>
                                             <li>
                                                 <a href="<?php echo $cat_link; ?>" class="<?php echo $is_active; ?>">

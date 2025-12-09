@@ -39,25 +39,17 @@ include "config.php";
     <!-- Main CSS File -->
     <link rel="stylesheet" href="assets/css/demo7.min.css">
     <link rel="stylesheet" type="text/css" href="assets/vendor/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/optimizations.css">
 </head>
 
 <body>
     <div class="page-wrapper">
-        <div class="top-notice text-white">
-            <div class="container text-center">
-                <h5 class="d-inline-block mb-0">🔥 <b>MEGA SALE</b> - Up to 70% OFF!</h5>
-                <a href="about.php" class="category">ABOUT US</a>
-                <a href="shop.php" class="category ml-2 mr-3">SHOP NOW</a>
-                <small>* Free Shipping on Orders ₹499+</small>
-                <button title="Close (Esc)" type="button" class="mfp-close">×</button>
-            </div><!-- End .container -->
-        </div><!-- End .top-notice -->
-
+        <?php include "common/top-notice.php"; ?>
         <?php include "common/header.php"; ?>
 
         <main class="main about">
             <div class="page-header page-header-bg"
-                style="background-image: url('assets/images/demoes/demo7/banners/banner-top.jpg');">
+                style="background-image: url('assets/images/products/placeholder.webp');">
                 <div class="container text-left">
                     <h1 class="font4 text-white"><span class="text-white">ABOUT</span>MYSMARTSCART</h1>
                 </div><!-- End .container -->
@@ -66,7 +58,7 @@ include "config.php";
             <nav aria-label="breadcrumb" class="breadcrumb-nav">
                 <div class="container">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/mysmartscart/">Home</a></li>
                         <li class="breadcrumb-item active" aria-current="page">About Us</li>
                     </ol>
                 </div><!-- End .container -->
@@ -144,8 +136,8 @@ include "config.php";
                             <strong>Discover amazing deals and exclusive offers!</strong><br>
                             Join thousands of happy customers who shop smart with MySmartSCart.
                         </p>
-                        <a href="shop.php" class="btn btn-primary btn-lg">Shop Now</a>
-                        <a href="contact.php" class="btn btn-outline-primary btn-lg ml-2">Contact Us</a>
+                        <a href="shop" class="btn btn-primary btn-lg">Shop Now</a>
+                        <a href="contact" class="btn btn-outline-primary btn-lg ml-2">Contact Us</a>
                     </div>
                 </div><!-- End .container -->
             </div><!-- End .about-section -->

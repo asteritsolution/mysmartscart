@@ -50,5 +50,9 @@ if (!isset($conn) || !$conn) {
     mysqli_set_charset($conn, "utf8");
 }
 
+// Include site settings helper for SEO-friendly URLs
+if (!function_exists('getProductUrl')) {
+    require_once __DIR__ . '/includes/site-settings.php';
+}
 ?>
 

@@ -10,7 +10,7 @@ $contact = mysqli_fetch_assoc($contact_result);
 // If no contact settings exist, use defaults
 if (!$contact) {
     $contact = [
-        'address' => 'India',
+        'address' => 'New Delhi, India',
         'phone' => '+91 XXXXXXXXXX',
         'email' => 'support@mysmartscart.in',
         'description' => 'Have questions or need help with your order? Our customer support team is here to assist you. Reach out to us anytime!',
@@ -21,6 +21,10 @@ if (!$contact) {
         'business_hours_sunday' => 'Sunday - Closed'
     ];
 }
+
+// Ensure latitude and longitude are valid numbers
+$contact['map_latitude'] = is_numeric($contact['map_latitude']) ? $contact['map_latitude'] : '28.6139';
+$contact['map_longitude'] = is_numeric($contact['map_longitude']) ? $contact['map_longitude'] : '77.2090';
 
 // Get form data if there were errors
 $form_data = isset($_SESSION['contact_form_data']) ? $_SESSION['contact_form_data'] : [];
@@ -62,20 +66,37 @@ unset($_SESSION['contact_form_data']);
     <!-- Main CSS File -->
     <link rel="stylesheet" href="assets/css/demo7.min.css">
     <link rel="stylesheet" type="text/css" href="assets/vendor/fontawesome-free/css/all.min.css">
+    
+    <!-- Leaflet CSS (FREE Map - No API Key) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Performance Optimizations -->
+    <link rel="stylesheet" href="assets/css/optimizations.css">
+    
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+            z-index: 1;
+        }
+        .map-popup {
+            font-family: inherit;
+            line-height: 1.6;
+        }
+        .map-popup address {
+            margin: 8px 0;
+            font-style: normal;
+            color: #666;
+        }
+        .leaflet-popup-content-wrapper {
+            border-radius: 8px;
+        }
+    </style>
 </head>
 
 <body>
     <div class="page-wrapper">
-        <div class="top-notice text-white">
-            <div class="container text-center">
-                <h5 class="d-inline-block mb-0">🔥 <b>MEGA SALE</b> - Up to 70% OFF!</h5>
-                <a href="about.php" class="category">ABOUT US</a>
-                <a href="shop.php" class="category ml-2 mr-3">SHOP NOW</a>
-                <small>* Free Shipping on Orders ₹499+</small>
-                <button title="Close (Esc)" type="button" class="mfp-close">×</button>
-            </div><!-- End .container -->
-        </div><!-- End .top-notice -->
-
+        <?php include "common/top-notice.php"; ?>
         <?php include "common/header.php"; ?>
       
         <main class="main contact-two">
@@ -271,9 +292,10 @@ unset($_SESSION['contact_form_data']);
 
     <!-- Main JS File -->
     <script src="assets/js/main.min.js"></script>
-    <!-- Google Map-->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDc3LRykbLB-y8MuomRUIY0qH5S6xgBLX4"></script>
-    <script src="assets/js/map.js"></script>
+    
+    <!-- Leaflet JS (FREE Map - No API Key Required) -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="assets/js/map-leaflet.js"></script>
     <script defer
         src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
         integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="

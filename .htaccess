@@ -149,8 +149,105 @@ FileETag None
 </IfModule>
 
 # =====================================================
+# SEO-FRIENDLY URL REWRITING
+# =====================================================
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /mysmartscart/
+    
+    # =====================================================
+    # ADMIN PANEL URL REWRITING (Allow .php extension removal)
+    # =====================================================
+    
+    # Admin panel: Remove .php extension (Internal rewrite, no redirect)
+    # Example: /adminpanel/dashboard -> /adminpanel/dashboard.php
+    RewriteCond %{REQUEST_URI} ^/mysmartscart/adminpanel/([a-zA-Z0-9_-]+)/?$ [NC]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{DOCUMENT_ROOT}/mysmartscart/adminpanel/%1.php -f
+    RewriteRule ^adminpanel/([a-zA-Z0-9_-]+)/?$ adminpanel/$1.php [L]
+    
+    # =====================================================
+    # REMOVE .PHP EXTENSION FROM URLs
+    # =====================================================
+    
+    # Exclude adminpanel from frontend rewrite rules
+    RewriteCond %{REQUEST_URI} ^/mysmartscart/adminpanel/ [NC]
+    RewriteRule ^ - [L]
+    
+    # Redirect index.php to root (must be first)
+    RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+(.*/)?index\.php[\s?] [NC]
+    RewriteRule ^(.*/)?index\.php$ /mysmartscart/ [R=301,L]
+    
+    # Redirect .php extension to non-extension URL (301 Permanent Redirect)
+    # Exclude product.php and category.php as they have special SEO URLs
+    RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+(.+)\.php[\s?] [NC]
+    RewriteCond %{REQUEST_URI} !^/mysmartscart/(product|category)\.php [NC]
+    RewriteRule ^(.+)\.php$ /mysmartscart/$1 [R=301,L]
+    
+    # =====================================================
+    # REDIRECT OLD URLs TO NEW SEO-FRIENDLY URLs (301 Permanent Redirect)
+    # =====================================================
+    
+    # Redirect old product URLs to new SEO-friendly format
+    # product.php?slug=apple-cider-vinegar -> product/apple-cider-vinegar
+    RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+(.*/)?product\.php\?slug=([^\s&]+) [NC]
+    RewriteRule ^(.*/)?product\.php$ /mysmartscart/product/%2? [R=301,L]
+    
+    # Redirect old category URLs to new SEO-friendly format
+    # shop.php?category=electronics -> category/electronics
+    RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+(.*/)?shop\.php\?category=([^\s&]+) [NC]
+    RewriteRule ^(.*/)?shop\.php$ /mysmartscart/category/%2? [R=301,L]
+    
+    # Redirect old category.php?slug= to new format
+    # category.php?slug=electronics -> category/electronics
+    RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+(.*/)?category\.php\?slug=([^\s&]+) [NC]
+    RewriteRule ^(.*/)?category\.php$ /mysmartscart/category/%2? [R=301,L]
+    
+    # =====================================================
+    # REWRITE SEO-FRIENDLY URLs TO PHP FILES
+    # =====================================================
+    
+    # Exclude adminpanel directory from rewriting
+    RewriteCond %{REQUEST_URI} !^/mysmartscart/adminpanel/ [NC]
+    
+    # Prevent rewriting for existing files and directories
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    
+    # Exclude static assets (CSS, JS, images, fonts) from rewriting
+    RewriteCond %{REQUEST_URI} !\.(css|js|jpg|jpeg|png|gif|webp|svg|ico|woff|woff2|ttf|eot|pdf|zip)$ [NC]
+    
+    # Product SEO-friendly URLs: product/slug
+    # Example: product/apple-cider-vinegar -> product.php?slug=apple-cider-vinegar
+    RewriteRule ^product/([a-z0-9-]+)/?$ product.php?slug=$1 [L,QSA]
+    
+    # Category SEO-friendly URLs: category/slug
+    # Example: category/electronics -> shop.php?category=electronics
+    RewriteRule ^category/([a-z0-9-]+)/?$ shop.php?category=$1 [L,QSA]
+    
+    # Shop with category: shop/category-slug
+    RewriteRule ^shop/([a-z0-9-]+)/?$ shop.php?category=$1 [L,QSA]
+    
+    # Remove .php extension - Internal rewrite (no redirect)
+    # Example: shop -> shop.php, about -> about.php
+    # Exclude adminpanel from this rule
+    RewriteCond %{REQUEST_URI} !^/mysmartscart/adminpanel/ [NC]
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME}\.php -f
+    RewriteRule ^([^/]+)/?$ $1.php [L]
+    
+    # Handle root - serve index.php without showing it
+    RewriteCond %{REQUEST_URI} ^/mysmartscart/?$
+    RewriteRule ^$ index.php [L]
+    
+    # API routes (keep existing)
+    RewriteRule ^api/(.*)$ api/products.php?action=$1 [L,QSA]
+</IfModule>
+
+# =====================================================
 # ERROR PAGES
 # =====================================================
-ErrorDocument 404 /index.php
-ErrorDocument 500 /index.php
+ErrorDocument 404 /mysmartscart/index.php
+ErrorDocument 500 /mysmartscart/index.php
 

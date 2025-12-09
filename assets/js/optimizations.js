@@ -278,7 +278,7 @@
             }
 
             dropdown.innerHTML = products.map(p => `
-                <a href="product.php?slug=${p.slug}" class="search-result-item">
+                <a href="product/${p.slug}" class="search-result-item">
                     <img src="${p.thumbnail || p.image}" alt="${p.name}" width="50" height="50">
                     <div>
                         <strong>${p.name}</strong>

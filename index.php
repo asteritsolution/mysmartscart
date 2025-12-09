@@ -1,11 +1,21 @@
 <?php 
 session_start();
 include "config.php"; 
+require_once "includes/site-settings.php";
 
 // Initialize wishlist if not exists
 if (!isset($_SESSION['wishlist'])) {
     $_SESSION['wishlist'] = [];
 }
+
+// Get dynamic settings
+$site_name = getSetting('site_name', 'MySmartSCart');
+$site_tagline = getSetting('site_tagline', 'Shop Smart, Live Smart!');
+$site_description = getSetting('site_description', 'Your one-stop smart shopping destination.');
+$site_keywords = getSetting('site_keywords', 'online shopping, best deals, electronics, fashion');
+$site_favicon = getSetting('site_favicon', 'assets/images/icons/favicon.png');
+$header_top_text = getSetting('header_top_text', '🔥 <b>MEGA SALE</b> - Up to 70% OFF!');
+$header_top_small_text = getSetting('header_top_small_text', '* Free Shipping on Orders ₹499+');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,14 +25,14 @@ if (!isset($_SESSION['wishlist'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>MySmartSCart - Your Smart Shopping Destination | Best Deals Online</title>
+    <title><?php echo htmlspecialchars($site_name); ?> - <?php echo htmlspecialchars($site_tagline); ?></title>
 
-    <meta name="keywords" content="MySmartSCart, online shopping, best deals, electronics, fashion, home decor, gadgets, affordable prices" />
-    <meta name="description" content="MySmartSCart - Your one-stop smart shopping destination. Discover amazing deals on electronics, fashion, home essentials & more. Fast delivery across India!">
-    <meta name="author" content="MySmartSCart.in">
+    <meta name="keywords" content="<?php echo htmlspecialchars($site_keywords); ?>" />
+    <meta name="description" content="<?php echo htmlspecialchars($site_description); ?>">
+    <meta name="author" content="<?php echo htmlspecialchars($site_name); ?>">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="assets/images/icons/favicon.png">
+    <link rel="icon" type="image/x-icon" href="<?php echo htmlspecialchars($site_favicon); ?>">
 
 
     <script>
@@ -53,18 +63,7 @@ if (!isset($_SESSION['wishlist'])) {
 
 <body>
     <div class="page-wrapper">
-        <div class="top-notice text-white">
-            <div class="container text-center">
-                <h5 class="d-inline-block mb-0">🔥 <b>MEGA SALE</b> - Up to 70% OFF!</h5>
-                <a href="about.php" class="category">ABOUT US</a>
-                <a href="shop.php" class="category ml-2 mr-3">SHOP NOW</a>
-                <small>* Free Shipping on Orders ₹499+</small>
-                <button title="Close (Esc)" type="button" class="mfp-close">×</button>
-            </div>
-            <!-- End .container -->
-        </div>
-        <!-- End .top-notice -->
-
+        <?php include "common/top-notice.php"; ?>
         <!-- Start .header -->
 
         <?php include "common/header.php"; ?>
@@ -120,7 +119,7 @@ if (!isset($_SESSION['wishlist'])) {
                         ?>
                         <div class="home-slide">
                             <figure class="w-100">
-                                <img src="assets/images/demoes/demo7/banners/banner-1.jpg" alt="banner" class="w-100">
+                                <img src="assets/images/products/placeholder.webp" alt="banner" class="w-100">
                             </figure>
                         </div>
                         <!-- End .home-slide -->
@@ -192,9 +191,9 @@ if (!isset($_SESSION['wishlist'])) {
                                 $price = number_format($product['price'], 2);
                                 $sale_price = !empty($product['sale_price']) ? number_format($product['sale_price'], 2) : null;
                                 
-                                // Product link
-                                $product_link = "product.php?slug=" . htmlspecialchars($product['slug']);
-                                $category_link = !empty($product['category_slug']) ? "category.php?slug=" . htmlspecialchars($product['category_slug']) : "shop.php";
+                                // Product link (SEO-friendly)
+                                $product_link = getProductUrl($product['slug']);
+                                $category_link = !empty($product['category_slug']) ? getCategoryUrl($product['category_slug']) : "shop.php";
                         ?>
                         <div class="product-default left-details">
                             <figure>
@@ -259,12 +258,12 @@ if (!isset($_SESSION['wishlist'])) {
                             // Default products if no featured products in database
                             echo '<div class="product-default left-details">
                                 <figure>
-                                    <a href="shop.php">
-                                        <img src="assets/images/demoes/demo7/products/product-1.jpg" alt="product" width="300" height="300">
+                                    <a href="shop">
+                                        <img src="assets/images/products/placeholder.webp" alt="product" width="300" height="300">
                                     </a>
                                 </figure>
                                 <div class="product-details">
-                                    <h3 class="product-title"><a href="shop.php">No Featured Products</a></h3>
+                                    <h3 class="product-title"><a href="shop">No Featured Products</a></h3>
                                     <div class="price-box">
                                         <span class="product-price">Add products to see them here</span>
                                     </div>
@@ -320,8 +319,8 @@ if (!isset($_SESSION['wishlist'])) {
                         if (mysqli_num_rows($categories_result) > 0) {
                             while ($category = mysqli_fetch_assoc($categories_result)) {
                                 // Category image - use category image if available, otherwise use default
-                                $category_image = !empty($category['image']) ? htmlspecialchars($category['image']) : 'assets/images/demoes/demo7/banners/cats/banner-1.jpg';
-                                $category_link = "shop.php?category=" . htmlspecialchars($category['slug']);
+                                $category_image = !empty($category['image']) ? htmlspecialchars($category['image']) : 'assets/images/products/placeholder.webp';
+                                $category_link = getCategoryUrl($category['slug']);
                                 $product_count = (int)$category['product_count'];
                                 $product_text = $product_count == 1 ? 'PRODUCT' : 'PRODUCTS';
                         ?>
@@ -341,15 +340,15 @@ if (!isset($_SESSION['wishlist'])) {
                         } else {
                             // Default categories if no categories in database
                             $default_categories = [
-                                ['name' => 'DRESS', 'image' => 'assets/images/demoes/demo7/banners/cats/banner-1.jpg', 'slug' => 'dress'],
-                                ['name' => 'TOYS', 'image' => 'assets/images/demoes/demo7/banners/cats/banner-2.jpg', 'slug' => 'toys'],
-                                ['name' => 'SHOES', 'image' => 'assets/images/demoes/demo7/banners/cats/banner-3.jpg', 'slug' => 'shoes'],
-                                ['name' => 'WATCHES', 'image' => 'assets/images/demoes/demo7/banners/cats/banner-4.jpg', 'slug' => 'watches']
+                                ['name' => 'Electronics', 'image' => 'assets/images/products/placeholder.webp', 'slug' => 'electronics'],
+                                ['name' => 'Fashion', 'image' => 'assets/images/products/placeholder.webp', 'slug' => 'fashion'],
+                                ['name' => 'Home & Living', 'image' => 'assets/images/products/placeholder.webp', 'slug' => 'home-living'],
+                                ['name' => 'Accessories', 'image' => 'assets/images/products/placeholder.webp', 'slug' => 'accessories']
                             ];
                             foreach ($default_categories as $cat) {
                         ?>
                         <div class="banner banner-image">
-                            <a href="shop.php?category=<?php echo $cat['slug']; ?>">
+                            <a href="<?php echo getCategoryUrl($cat['slug']); ?>">
                                 <img src="<?php echo $cat['image']; ?>" width="272" height="231" alt="<?php echo $cat['name']; ?>">
                             </a>
                             <div class="banner-layer banner-layer-middle">
@@ -413,8 +412,8 @@ if (!isset($_SESSION['wishlist'])) {
                                 $price = number_format($product['price'], 2);
                                 $sale_price = !empty($product['sale_price']) ? number_format($product['sale_price'], 2) : null;
                                 
-                                // Product link
-                                $product_link = "product.php?slug=" . htmlspecialchars($product['slug']);
+                                // Product link (SEO-friendly)
+                                $product_link = getProductUrl($product['slug']);
                                 
                                 // Category links
                                 $category_links = '';
@@ -422,7 +421,7 @@ if (!isset($_SESSION['wishlist'])) {
                                     $names = explode(',', $product['category_names']);
                                     $slugs = explode(',', $product['category_slugs']);
                                     foreach ($names as $key => $name) {
-                                        $category_links .= '<a href="shop.php?category=' . htmlspecialchars($slugs[$key]) . '" class="product-category">' . htmlspecialchars($name) . '</a>';
+                                        $category_links .= '<a href="' . getCategoryUrl($slugs[$key]) . '" class="product-category">' . htmlspecialchars($name) . '</a>';
                                         if ($key < count($names) - 1) {
                                             $category_links .= ', ';
                                         }
@@ -524,8 +523,8 @@ if (!isset($_SESSION['wishlist'])) {
                                 $price = number_format($product['price'], 2);
                                 $sale_price = !empty($product['sale_price']) ? number_format($product['sale_price'], 2) : null;
                                 
-                                // Product link
-                                $product_link = "product.php?slug=" . htmlspecialchars($product['slug']);
+                                // Product link (SEO-friendly)
+                                $product_link = getProductUrl($product['slug']);
                                 
                                 // Category links
                                 $category_links = '';
@@ -533,7 +532,7 @@ if (!isset($_SESSION['wishlist'])) {
                                     $names = explode(',', $product['category_names']);
                                     $slugs = explode(',', $product['category_slugs']);
                                     foreach ($names as $key => $name) {
-                                        $category_links .= '<a href="shop.php?category=' . htmlspecialchars($slugs[$key]) . '" class="product-category">' . htmlspecialchars($name) . '</a>';
+                                        $category_links .= '<a href="' . getCategoryUrl($slugs[$key]) . '" class="product-category">' . htmlspecialchars($name) . '</a>';
                                         if ($key < count($names) - 1) {
                                             $category_links .= ', ';
                                         }
@@ -621,8 +620,8 @@ if (!isset($_SESSION['wishlist'])) {
                                 $price = number_format($product['price'], 2);
                                 $sale_price = !empty($product['sale_price']) ? number_format($product['sale_price'], 2) : null;
                                 
-                                // Product link
-                                $product_link = "product.php?slug=" . htmlspecialchars($product['slug']);
+                                // Product link (SEO-friendly)
+                                $product_link = getProductUrl($product['slug']);
                                 
                                 // Category links
                                 $category_links = '';
@@ -630,7 +629,7 @@ if (!isset($_SESSION['wishlist'])) {
                                     $names = explode(',', $product['category_names']);
                                     $slugs = explode(',', $product['category_slugs']);
                                     foreach ($names as $key => $name) {
-                                        $category_links .= '<a href="shop.php?category=' . htmlspecialchars($slugs[$key]) . '" class="product-category">' . htmlspecialchars($name) . '</a>';
+                                        $category_links .= '<a href="' . getCategoryUrl($slugs[$key]) . '" class="product-category">' . htmlspecialchars($name) . '</a>';
                                         if ($key < count($names) - 1) {
                                             $category_links .= ', ';
                                         }
@@ -718,8 +717,8 @@ if (!isset($_SESSION['wishlist'])) {
                                 $price = number_format($product['price'], 2);
                                 $sale_price = !empty($product['sale_price']) ? number_format($product['sale_price'], 2) : null;
                                 
-                                // Product link
-                                $product_link = "product.php?slug=" . htmlspecialchars($product['slug']);
+                                // Product link (SEO-friendly)
+                                $product_link = getProductUrl($product['slug']);
                                 
                                 // Category links
                                 $category_links = '';
@@ -727,7 +726,7 @@ if (!isset($_SESSION['wishlist'])) {
                                     $names = explode(',', $product['category_names']);
                                     $slugs = explode(',', $product['category_slugs']);
                                     foreach ($names as $key => $name) {
-                                        $category_links .= '<a href="shop.php?category=' . htmlspecialchars($slugs[$key]) . '" class="product-category">' . htmlspecialchars($name) . '</a>';
+                                        $category_links .= '<a href="' . getCategoryUrl($slugs[$key]) . '" class="product-category">' . htmlspecialchars($name) . '</a>';
                                         if ($key < count($names) - 1) {
                                             $category_links .= ', ';
                                         }
@@ -810,7 +809,7 @@ if (!isset($_SESSION['wishlist'])) {
             <h2>Subscribe to newsletter</h2>
 
             <p>
-                Subscribe to the Porto mailing list to receive updates on new arrivals, special offers and our
+                Subscribe to our mailing list to receive updates on new arrivals, special offers and our
                 promotions.
             </p>
 
@@ -888,8 +887,5 @@ if (!isset($_SESSION['wishlist'])) {
         data-cf-beacon='{"version":"2024.11.0","token":"ecd4920e43e14654b78e65dbf8311922","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}'
         crossorigin="anonymous"></script>
 </body>
-
-
-<!-- Mirrored from portotheme.com/html/porto_ecommerce/index.php by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 26 Nov 2025 11:00:39 GMT -->
 
 </html>

@@ -97,7 +97,12 @@ switch ($action) {
  * Generate product card HTML for AJAX
  */
 function getProductCardHTML($product) {
-    $product_link = "product.php?slug=" . htmlspecialchars($product['slug']);
+    // Use SEO-friendly URL
+    if (function_exists('getProductUrl')) {
+        $product_link = getProductUrl($product['slug']);
+    } else {
+        $product_link = "product.php?slug=" . htmlspecialchars($product['slug']);
+    }
     $image = htmlspecialchars($product['thumbnail'] ?: $product['image']);
     $name = htmlspecialchars($product['name']);
     $price = number_format($product['price'], 2);

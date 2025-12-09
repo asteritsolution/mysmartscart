@@ -116,9 +116,9 @@ if (mysqli_query($conn, $sql)) {
 
 // Insert sample banner data
 $sql = "INSERT INTO `banners` (`title`, `image`, `link`, `status`, `sort_order`) VALUES
-('Banner 1', 'assets/images/demoes/demo7/banners/banner-1.jpg', 'shop.php', 1, 1),
-('Banner 2', 'assets/images/demoes/demo7/banners/banner-1.jpg', 'shop.php', 1, 2),
-('Banner 3', 'assets/images/demoes/demo7/banners/banner-1.jpg', 'shop.php', 1, 3)";
+('Banner 1', 'assets/images/products/placeholder.webp', 'shop', 1, 1),
+('Banner 2', 'assets/images/products/placeholder.webp', 'shop', 1, 2),
+('Banner 3', 'assets/images/products/placeholder.webp', 'shop', 1, 3)";
 
 if (mysqli_query($conn, $sql)) {
     echo "<p style='color:green;'>✓ Sample banner data inserted</p>";

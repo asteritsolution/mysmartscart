@@ -4,6 +4,11 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Include helper functions for SEO-friendly URLs
+if (!function_exists('getCategoryUrl')) {
+    require_once __DIR__ . '/../includes/site-settings.php';
+}
+
 // Initialize cart if not exists
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
@@ -39,32 +44,32 @@ if (isset($conn)) {
         <span class="mobile-menu-close"><i class="fa fa-times"></i></span>
         <nav class="mobile-nav">
             <ul class="mobile-menu">
-                <li><a href="index.php">Home</a></li>
+                <li><a href="/mysmartscart/">Home</a></li>
                 <li>
-                    <a href="shop.php">Shop</a>
+                    <a href="shop">Shop</a>
                     <?php if (!empty($mobile_categories)) { ?>
                     <ul>
-                        <li><a href="shop.php">All Products</a></li>
+                        <li><a href="shop">All Products</a></li>
                         <?php foreach ($mobile_categories as $cat) { ?>
-                        <li><a href="category.php?slug=<?php echo htmlspecialchars($cat['slug']); ?>"><?php echo htmlspecialchars($cat['name']); ?></a></li>
+                        <li><a href="<?php echo getCategoryUrl($cat['slug']); ?>"><?php echo htmlspecialchars($cat['name']); ?></a></li>
                         <?php } ?>
                     </ul>
                     <?php } ?>
                 </li>
-                <li><a href="about.php">About Us</a></li>
-                <li><a href="contact.php">Contact Us</a></li>
+                <li><a href="about">About Us</a></li>
+                <li><a href="contact">Contact Us</a></li>
                 <li>
                     <a href="#">Pages</a>
                     <ul>
-                        <li><a href="wishlist.php">Wishlist</a></li>
-                        <li><a href="cart.php">Shopping Cart</a></li>
-                        <li><a href="checkout.php">Checkout</a></li>
+                        <li><a href="wishlist">Wishlist</a></li>
+                        <li><a href="cart">Shopping Cart</a></li>
+                        <li><a href="checkout">Checkout</a></li>
                         <?php if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) { ?>
-                        <li><a href="dashboard.php">Dashboard</a></li>
-                        <li><a href="logout.php">Logout</a></li>
+                        <li><a href="dashboard">Dashboard</a></li>
+                        <li><a href="logout">Logout</a></li>
                         <?php } else { ?>
-                        <li><a href="login.php">Login</a></li>
-                        <li><a href="forgot-password.php">Forgot Password</a></li>
+                        <li><a href="login">Login</a></li>
+                        <li><a href="forgot-password">Forgot Password</a></li>
                         <?php } ?>
                     </ul>
                 </li>
@@ -72,7 +77,7 @@ if (isset($conn)) {
 
             <ul class="mobile-menu mt-2 mb-2">
                 <li class="border-0">
-                    <a href="shop.php">
+                    <a href="shop">
                         <i class="fas fa-tag mr-2"></i> Shop Now
                     </a>
                 </li>
@@ -80,23 +85,23 @@ if (isset($conn)) {
 
             <ul class="mobile-menu">
                 <?php if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) { ?>
-                <li><a href="dashboard.php">My Account</a></li>
+                <li><a href="dashboard">My Account</a></li>
                 <?php } else { ?>
-                <li><a href="login.php">My Account</a></li>
+                <li><a href="login">My Account</a></li>
                 <?php } ?>
-                <li><a href="contact.php">Contact Us</a></li>
-                <li><a href="wishlist.php">My Wishlist</a></li>
-                <li><a href="cart.php">Cart</a></li>
+                <li><a href="contact">Contact Us</a></li>
+                <li><a href="wishlist">My Wishlist</a></li>
+                <li><a href="cart">Cart</a></li>
                 <?php if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) { ?>
-                <li><a href="logout.php">Log Out</a></li>
+                <li><a href="logout">Log Out</a></li>
                 <?php } else { ?>
-                <li><a href="login.php" class="login-link">Log In</a></li>
+                <li><a href="login" class="login-link">Log In</a></li>
                 <?php } ?>
             </ul>
         </nav>
         <!-- End .mobile-nav -->
 
-        <form class="search-wrapper mb-2" action="shop.php" method="get">
+        <form class="search-wrapper mb-2" action="shop" method="get">
             <input type="text" class="form-control mb-0" name="q" placeholder="Search products..." required />
             <button class="btn icon-search text-white bg-transparent p-0" type="submit"></button>
         </form>
@@ -113,33 +118,33 @@ if (isset($conn)) {
 
 <div class="sticky-navbar">
     <div class="sticky-info">
-        <a href="index.php">
+        <a href="/mysmartscart/">
             <i class="icon-home"></i>Home
         </a>
     </div>
     <div class="sticky-info">
-        <a href="shop.php" class="">
+        <a href="shop" class="">
             <i class="icon-bars"></i>Shop
         </a>
     </div>
     <div class="sticky-info">
-        <a href="wishlist.php" class="">
+        <a href="wishlist" class="">
             <i class="icon-wishlist-2"></i>Wishlist
         </a>
     </div>
     <div class="sticky-info">
         <?php if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) { ?>
-        <a href="dashboard.php" class="">
+        <a href="dashboard" class="">
             <i class="icon-user-2"></i>Account
         </a>
         <?php } else { ?>
-        <a href="login.php" class="">
+        <a href="login" class="">
             <i class="icon-user-2"></i>Login
         </a>
         <?php } ?>
     </div>
     <div class="sticky-info">
-        <a href="cart.php" class="">
+        <a href="cart" class="">
             <i class="icon-shopping-cart position-relative">
                 <span class="cart-count badge-circle"><?php echo $mobile_cart_count; ?></span>
             </i>Cart

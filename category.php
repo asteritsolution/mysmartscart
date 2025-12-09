@@ -7,8 +7,24 @@ if (!isset($_SESSION['wishlist'])) {
     $_SESSION['wishlist'] = [];
 }
 
-// Get category filter from URL
-$category_slug = isset($_GET['slug']) ? mysqli_real_escape_string($conn, $_GET['slug']) : '';
+// Get category filter from URL (supports both old and new SEO-friendly URLs)
+// Old format: category.php?slug=electronics
+// New format: category/electronics
+$category_slug = '';
+
+// Check if slug is in GET parameter (old format)
+if (isset($_GET['slug']) && !empty($_GET['slug'])) {
+    $category_slug = mysqli_real_escape_string($conn, $_GET['slug']);
+} 
+// Check REQUEST_URI for SEO-friendly format
+elseif (isset($_SERVER['REQUEST_URI'])) {
+    $uri = $_SERVER['REQUEST_URI'];
+    // Extract slug from /mysmartscart/category/slug format
+    if (preg_match('#/category/([a-z0-9-]+)/?$#i', $uri, $matches)) {
+        $category_slug = mysqli_real_escape_string($conn, $matches[1]);
+    }
+}
+
 $category_filter = '';
 $category_name = 'All Products';
 $category_description = '';
@@ -94,7 +110,15 @@ $per_page_param = "&per_page=" . $per_page;
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title><?php echo htmlspecialchars($category_name); ?> - KRC Woollens Ranikhet | Handmade Products</title>
+    <!-- Base URL for SEO-friendly URLs - Fixes CSS/JS path issues -->
+    <?php 
+    if (!function_exists('getBaseUrl')) {
+        require_once __DIR__ . '/includes/site-settings.php';
+    }
+    ?>
+    <base href="<?php echo getBaseUrl(); ?>">
+
+    <title><?php echo htmlspecialchars($category_name); ?> - MySmartSCart | Best Products</title>
 
     <meta name="keywords" content="KRC Woollens, <?php echo htmlspecialchars($category_name); ?>, Handmade Products, Woollen Items" />
     <meta name="description" content="<?php echo !empty($category_description) ? htmlspecialchars($category_description) : 'Shop ' . htmlspecialchars($category_name) . ' at KRC Woollens Ranikhet. Handmade products by army families.'; ?>">
@@ -124,15 +148,12 @@ $per_page_param = "&per_page=" . $per_page;
     <!-- Main CSS File -->
     <link rel="stylesheet" href="assets/css/demo7.min.css">
     <link rel="stylesheet" type="text/css" href="assets/vendor/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="assets/css/optimizations.css">
 </head>
 
 <body>
     <div class="page-wrapper">
-        <div class="top-notice text-white">
-            <div class="container text-center">
-                <h5 class="d-inline-block mb-0">Supporting <b>Army Families</b> Since 1977</h5>
-                <a href="about.php" class="category">OUR STORY</a>
-                <a href="shop.php" class="category ml-2 mr-3">SHOP NOW</a>
+        <?php include "common/top-notice.php"; ?>
                 <small>* A Rehabilitation Project</small>
                 <button title="Close (Esc)" type="button" class="mfp-close">×</button>
             </div>
@@ -142,7 +163,7 @@ $per_page_param = "&per_page=" . $per_page;
 
         <main class="main">
             <div class="category-banner"
-                style="background-image: url(assets/images/demoes/demo7/banners/banner-top-2.jpg)">
+                style="background-image: url(assets/images/products/placeholder.webp)">
                 <div class="container">
                     <div class="promo-content d-sm-flex align-items-center">
                         <div>
@@ -251,8 +272,8 @@ $per_page_param = "&per_page=" . $per_page;
                                     $price = number_format($product['price'], 2);
                                     $sale_price = !empty($product['sale_price']) ? number_format($product['sale_price'], 2) : null;
                                     
-                                    // Product link
-                                    $product_link = "product.php?slug=" . htmlspecialchars($product['slug']);
+                                    // Product link (SEO-friendly)
+                                    $product_link = getProductUrl($product['slug']);
                                     
                                     // Category links
                                     $category_links = '';
@@ -263,7 +284,7 @@ $per_page_param = "&per_page=" . $per_page;
                                         foreach ($category_names as $idx => $cat_name) {
                                             $cat_slug = isset($category_slugs[$idx]) ? trim($category_slugs[$idx]) : '';
                                             if (!empty($cat_slug)) {
-                                                $cat_links_array[] = '<a href="category.php?slug=' . htmlspecialchars($cat_slug) . '" class="product-category">' . htmlspecialchars(trim($cat_name)) . '</a>';
+                                                $cat_links_array[] = '<a href="' . getCategoryUrl($cat_slug) . '" class="product-category">' . htmlspecialchars(trim($cat_name)) . '</a>';
                                             }
                                         }
                                         $category_links = implode(', ', $cat_links_array);
@@ -422,7 +443,7 @@ $per_page_param = "&per_page=" . $per_page;
                                             if (mysqli_num_rows($sidebar_cats_result) > 0) {
                                                 while ($cat = mysqli_fetch_assoc($sidebar_cats_result)) {
                                                     $is_active = ($category_slug == $cat['slug']) ? 'active' : '';
-                                                    $cat_link = "category.php?slug=" . htmlspecialchars($cat['slug']);
+                                                    $cat_link = getCategoryUrl($cat['slug']);
                                             ?>
                                             <li>
                                                 <a href="<?php echo $cat_link; ?>" class="<?php echo $is_active; ?>">
@@ -477,7 +498,7 @@ $per_page_param = "&per_page=" . $per_page;
                                             $fp_image = !empty($fp['image']) ? $fp['image'] : 'assets/images/products/placeholder.webp';
                                             $fp_price = number_format($fp['price'], 2);
                                             $fp_sale_price = !empty($fp['sale_price']) ? number_format($fp['sale_price'], 2) : null;
-                                            $fp_link = "product.php?slug=" . htmlspecialchars($fp['slug']);
+                                            $fp_link = getProductUrl($fp['slug']);
                                         ?>
                                         <div class="product-default left-details product-widget">
                                             <figure>

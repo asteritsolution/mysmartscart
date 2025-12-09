@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login - KRC Woollens</title>
+    <title>Admin Login - MySmartSCart</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
@@ -114,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="login-card">
         <div class="login-header">
             <h3><i class="fas fa-shield-alt"></i> Admin Panel</h3>
-            <p class="mb-0">KRC Woollens Ranikhet</p>
+            <p class="mb-0">MySmartSCart</p>
         </div>
         <div class="login-body">
             <?php if ($error): ?>
@@ -133,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fas fa-envelope"></i></span>
                         </div>
-                        <input type="email" class="form-control with-icon" name="email" placeholder="admin@krcwoollens.com" required autofocus>
+                        <input type="email" class="form-control with-icon" name="email" placeholder="admin@mysmartscart.in" required autofocus>
                     </div>
                 </div>
                 
@@ -153,7 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </form>
             
             <div class="text-center mt-3">
-                <a href="../index.php" class="text-muted"><i class="fas fa-arrow-left"></i> Back to Website</a>
+                <a href="/mysmartscart/" class="text-muted"><i class="fas fa-arrow-left"></i> Back to Website</a>
             </div>
         </div>
     </div>
