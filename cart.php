@@ -106,12 +106,12 @@ $total = $subtotal + $shipping;
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	<title>Shopping Cart - KRC Woollens Ranikhet | A Rehabilitation Project Since 1977</title>
+	<title>Shopping Cart - MySmartSCart | Your Items</title>
 
-	<meta name="keywords" content="KRC Woollens, Shopping Cart, Checkout" />
+	<meta name="keywords" content="MySmartSCart, Shopping Cart, Checkout, Online Shopping" />
 	<meta name="description"
-		content="Your shopping cart at KRC Woollens Ranikhet. Support army families with your purchase.">
-	<meta name="author" content="KRC Woollens Ranikhet">
+		content="Review your shopping cart at MySmartSCart. Checkout securely and enjoy fast delivery across India.">
+	<meta name="author" content="MySmartSCart.in">
 
 	<!-- Favicon -->
 	<link rel="icon" type="image/x-icon" href="assets/images/icons/favicon.png">
@@ -141,10 +141,10 @@ $total = $subtotal + $shipping;
 	<div class="page-wrapper">
 		<div class="top-notice text-white">
 			<div class="container text-center">
-				<h5 class="d-inline-block mb-0">Supporting <b>Army Families</b> Since 1977</h5>
-				<a href="about.php" class="category">OUR STORY</a>
+				<h5 class="d-inline-block mb-0">🔥 <b>MEGA SALE</b> - Up to 70% OFF!</h5>
+				<a href="about.php" class="category">ABOUT US</a>
 				<a href="shop.php" class="category ml-2 mr-3">SHOP NOW</a>
-				<small>* A Rehabilitation Project</small>
+				<small>* Free Shipping on Orders ₹499+</small>
 				<button title="Close (Esc)" type="button" class="mfp-close">×</button>
 			</div><!-- End .container -->
 		</div><!-- End .top-notice -->

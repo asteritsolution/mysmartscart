@@ -86,7 +86,7 @@ $shipping_cost = ($shipping_method == 'free') ? 0.00 : 0.00; // Free shipping fo
 $total = $subtotal + $shipping_cost;
 
 // Generate unique order number
-$order_number = 'KRC-' . date('Ymd') . '-' . strtoupper(substr(uniqid(), -6));
+$order_number = 'MSC-' . date('Ymd') . '-' . strtoupper(substr(uniqid(), -6));
 
 // Start transaction
 mysqli_begin_transaction($conn);

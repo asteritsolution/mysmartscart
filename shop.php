@@ -56,11 +56,11 @@ $products_result = mysqli_query($conn, $products_query);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Shop - KRC Woollens Ranikhet | Handmade Products by Army Families</title>
+    <title>Shop - MySmartSCart | Best Deals on Trending Products</title>
 
-    <meta name="keywords" content="KRC Woollens, Shop, Handmade Products, Woollen Items, Army Families" />
-    <meta name="description" content="Shop handmade woollen products created by families of army officers. Support our rehabilitation project by purchasing quality handcrafted items.">
-    <meta name="author" content="KRC Woollens Ranikhet">
+    <meta name="keywords" content="MySmartSCart, Shop, Online Shopping, Best Deals, Electronics, Fashion, Gadgets" />
+    <meta name="description" content="Shop the latest trending products at MySmartSCart. Discover amazing deals on electronics, fashion, home essentials & more with fast delivery across India!">
+    <meta name="author" content="MySmartSCart.in">
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="assets/images/icons/favicon.png">
@@ -93,10 +93,10 @@ $products_result = mysqli_query($conn, $products_query);
     <div class="page-wrapper">
         <div class="top-notice text-white">
             <div class="container text-center">
-                <h5 class="d-inline-block mb-0">Supporting <b>Army Families</b> Since 1977</h5>
-                <a href="about.php" class="category">OUR STORY</a>
+                <h5 class="d-inline-block mb-0">🔥 <b>MEGA SALE</b> - Up to 70% OFF!</h5>
+                <a href="about.php" class="category">ABOUT US</a>
                 <a href="shop.php" class="category ml-2 mr-3">SHOP NOW</a>
-                <small>* A Rehabilitation Project</small>
+                <small>* Free Shipping on Orders ₹499+</small>
                 <button title="Close (Esc)" type="button" class="mfp-close">×</button>
             </div>
             <!-- End .container -->
@@ -112,8 +112,8 @@ $products_result = mysqli_query($conn, $products_query);
                 <div class="container">
                     <div class="promo-content d-sm-flex align-items-center">
                         <div>
-                            <h2 class="m-b-1">KRC Woollens Ranikhet</h2>
-                            <h3 class="mb-0 ml-0">Handmade Products</h3>
+                            <h2 class="m-b-1">MySmartSCart</h2>
+                            <h3 class="mb-0 ml-0">Shop Smart, Save Big!</h3>
                         </div>
                         <hr class="divider-short-thick">
                         <a href="shop.php" class="btn btn-light">Shop Now <i

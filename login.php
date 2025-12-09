@@ -14,11 +14,11 @@ if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	<title>Login / Register - KRC Woollens Ranikhet | A Rehabilitation Project Since 1977</title>
+	<title>Login / Register - MySmartSCart | My Account</title>
 
-	<meta name="keywords" content="KRC Woollens, Login, Register, Account" />
-	<meta name="description" content="Login or create an account at KRC Woollens Ranikhet to complete your purchase.">
-	<meta name="author" content="KRC Woollens Ranikhet">
+	<meta name="keywords" content="MySmartSCart, Login, Register, Account, Sign In" />
+	<meta name="description" content="Login or create an account at MySmartSCart to track orders, manage wishlist and checkout faster.">
+	<meta name="author" content="MySmartSCart.in">
 
 	<!-- Favicon -->
 	<link rel="icon" type="image/x-icon" href="assets/images/icons/favicon.png">
@@ -48,10 +48,10 @@ if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
 	<div class="page-wrapper">
 		<div class="top-notice text-white">
 			<div class="container text-center">
-				<h5 class="d-inline-block mb-0">Supporting <b>Army Families</b> Since 1977</h5>
-				<a href="about.php" class="category">OUR STORY</a>
+				<h5 class="d-inline-block mb-0">🔥 <b>MEGA SALE</b> - Up to 70% OFF!</h5>
+				<a href="about.php" class="category">ABOUT US</a>
 				<a href="shop.php" class="category ml-2 mr-3">SHOP NOW</a>
-				<small>* A Rehabilitation Project</small>
+				<small>* Free Shipping on Orders ₹499+</small>
 				<button title="Close (Esc)" type="button" class="mfp-close">×</button>
 			</div><!-- End .container -->
 		</div><!-- End .top-notice -->

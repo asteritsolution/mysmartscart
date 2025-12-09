@@ -10,14 +10,14 @@ $contact = mysqli_fetch_assoc($contact_result);
 // If no contact settings exist, use defaults
 if (!$contact) {
     $contact = [
-        'address' => 'Ranikhet, Uttarakhand, India',
-        'phone' => '+91 1234567890',
-        'email' => 'info@krcwoollens.com',
-        'description' => 'Get in touch with KRC Woollens Ranikhet. We are here to support army families and help them achieve financial independence through our rehabilitation project.',
-        'map_latitude' => '29.6408',
-        'map_longitude' => '79.4322',
-        'business_hours_monday_friday' => 'Monday - Friday 9am to 5pm',
-        'business_hours_saturday' => 'Saturday - 9am to 2pm',
+        'address' => 'India',
+        'phone' => '+91 XXXXXXXXXX',
+        'email' => 'support@mysmartscart.in',
+        'description' => 'Have questions or need help with your order? Our customer support team is here to assist you. Reach out to us anytime!',
+        'map_latitude' => '28.6139',
+        'map_longitude' => '77.2090',
+        'business_hours_monday_friday' => 'Monday - Friday 10am to 7pm',
+        'business_hours_saturday' => 'Saturday - 10am to 5pm',
         'business_hours_sunday' => 'Sunday - Closed'
     ];
 }
@@ -34,12 +34,12 @@ unset($_SESSION['contact_form_data']);
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Contact Us - KRC Woollens Ranikhet | A Rehabilitation Project Since 1977</title>
+    <title>Contact Us - MySmartSCart | Customer Support</title>
 
-    <meta name="keywords" content="KRC Woollens, Contact, Ranikhet, Support, Get in Touch" />
+    <meta name="keywords" content="MySmartSCart, Contact, Customer Support, Help, Get in Touch" />
     <meta name="description"
-        content="Contact KRC Woollens Ranikhet. Get in touch with us to support army families or learn more about our rehabilitation project.">
-    <meta name="author" content="KRC Woollens Ranikhet">
+        content="Contact MySmartSCart customer support. We're here to help you with orders, queries, and any assistance you need.">
+    <meta name="author" content="MySmartSCart.in">
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="assets/images/icons/favicon.png">
@@ -68,10 +68,10 @@ unset($_SESSION['contact_form_data']);
     <div class="page-wrapper">
         <div class="top-notice text-white">
             <div class="container text-center">
-                <h5 class="d-inline-block mb-0">Supporting <b>Army Families</b> Since 1977</h5>
-                <a href="about.php" class="category">OUR STORY</a>
+                <h5 class="d-inline-block mb-0">🔥 <b>MEGA SALE</b> - Up to 70% OFF!</h5>
+                <a href="about.php" class="category">ABOUT US</a>
                 <a href="shop.php" class="category ml-2 mr-3">SHOP NOW</a>
-                <small>* A Rehabilitation Project</small>
+                <small>* Free Shipping on Orders ₹499+</small>
                 <button title="Close (Esc)" type="button" class="mfp-close">×</button>
             </div><!-- End .container -->
         </div><!-- End .top-notice -->

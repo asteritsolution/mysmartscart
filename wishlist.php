@@ -44,11 +44,11 @@ if (!empty($_SESSION['wishlist'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>My Wishlist - KRC Woollens Ranikhet | A Rehabilitation Project Since 1977</title>
+    <title>My Wishlist - MySmartSCart | Saved Products</title>
 
-    <meta name="keywords" content="KRC Woollens, Wishlist, Saved Products" />
-    <meta name="description" content="View your wishlist of handmade products from KRC Woollens Ranikhet.">
-    <meta name="author" content="KRC Woollens Ranikhet">
+    <meta name="keywords" content="MySmartSCart, Wishlist, Saved Products, Shopping" />
+    <meta name="description" content="View your wishlist of saved products at MySmartSCart.">
+    <meta name="author" content="MySmartSCart.in">
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="assets/images/icons/favicon.png">
@@ -78,10 +78,10 @@ if (!empty($_SESSION['wishlist'])) {
     <div class="page-wrapper">
         <div class="top-notice text-white">
             <div class="container text-center">
-                <h5 class="d-inline-block mb-0">Supporting <b>Army Families</b> Since 1977</h5>
-                <a href="about.php" class="category">OUR STORY</a>
+                <h5 class="d-inline-block mb-0">🔥 <b>MEGA SALE</b> - Up to 70% OFF!</h5>
+                <a href="about.php" class="category">ABOUT US</a>
                 <a href="shop.php" class="category ml-2 mr-3">SHOP NOW</a>
-                <small>* A Rehabilitation Project</small>
+                <small>* Free Shipping on Orders ₹499+</small>
                 <button title="Close (Esc)" type="button" class="mfp-close">×</button>
             </div><!-- End .container -->
         </div><!-- End .top-notice -->
@@ -126,7 +126,7 @@ if (!empty($_SESSION['wishlist'])) {
                 <?php } ?>
                 
                 <div class="wishlist-title">
-                    <h2 class="p-2">My Wishlist - KRC Woollens</h2>
+                    <h2 class="p-2">My Wishlist</h2>
                 </div>
                 <div class="wishlist-table-container">
                     <?php if (empty($wishlist_items)) { ?>

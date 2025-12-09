@@ -117,7 +117,7 @@ if (!empty($_SESSION['cart'])) {
                 </button>
 
                 <a href="index.php" class="logo w-100">
-                    <img src="assets/images/logo.png" alt="KRC Woollens Ranikhet">
+                    <img src="assets/images/logo.png" alt="MySmartSCart">
                 </a>
 
                 <nav class="main-nav w-100">
@@ -142,7 +142,7 @@ if (!empty($_SESSION['cart'])) {
                     <form action="shop.php" method="get">
                         <div class="header-search-wrapper">
                             <input type="search" class="form-control bg-white" name="q" id="q"
-                                placeholder="Search handmade products..." required="">
+                                placeholder="Search products..." required="">
                             <div class="select-custom bg-white">
                                 <select id="cat" name="cat">
                                     <option value="">All Categories</option>

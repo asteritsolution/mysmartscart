@@ -1,8 +1,8 @@
--- KRC Woollen E-commerce Database Structure
+-- MySmartSCart E-commerce Database Structure
 
 -- Create Database
-CREATE DATABASE IF NOT EXISTS krcwoollen CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE krcwoollen;
+CREATE DATABASE IF NOT EXISTS mysmartscart CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE mysmartscart;
 
 -- Drop existing tables if they exist (with tablespace handling)
 SET FOREIGN_KEY_CHECKS = 0;

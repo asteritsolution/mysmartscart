@@ -1,14 +1,14 @@
 <?php
-// Email Configuration for Hostinger SMTP
+// Email Configuration for SMTP
 // This file contains email sending functions
 
-// Hostinger SMTP Settings
+// SMTP Settings - Update these with your actual credentials
 define('SMTP_HOST', 'smtp.hostinger.com');
 define('SMTP_PORT', 587);
-define('SMTP_USERNAME', 'noreply@krcwoollens.com');
-define('SMTP_PASSWORD', 'Wp7?Mnq?3OU');
-define('SMTP_FROM_EMAIL', 'noreply@krcwoollens.com');
-define('SMTP_FROM_NAME', 'KRC Woollens');
+define('SMTP_USERNAME', 'noreply@mysmartscart.in');
+define('SMTP_PASSWORD', 'YOUR_PASSWORD_HERE');
+define('SMTP_FROM_EMAIL', 'noreply@mysmartscart.in');
+define('SMTP_FROM_NAME', 'MySmartSCart');
 
 // Check if PHPMailer is available from mailing folder
 $phpmailer_available = false;
@@ -98,7 +98,7 @@ function sendEmailSimple($to, $subject, $message, $from_email, $from_name) {
 
 // Function to send OTP email
 function sendOTPEmail($email, $otp) {
-    $subject = "Password Reset OTP - KRC Woollens";
+    $subject = "Password Reset OTP - MySmartSCart";
     $message = "
     <!DOCTYPE html>
     <html>
@@ -117,7 +117,7 @@ function sendOTPEmail($email, $otp) {
     <body>
         <div class='container'>
             <div class='header'>
-                <h2>KRC Woollens Ranikhet</h2>
+                <h2>MySmartSCart</h2>
             </div>
             <div class='content'>
                 <h3>Password Reset Request</h3>
@@ -131,10 +131,11 @@ function sendOTPEmail($email, $otp) {
                 <p><strong>This OTP will expire in 10 minutes.</strong></p>
                 <p>If you did not request this password reset, please ignore this email.</p>
                 
-                <p>Best regards,<br>KRC Woollens Team</p>
+                <p>Best regards,<br>MySmartSCart Team</p>
             </div>
             <div class='footer'>
                 <p>This is an automated email. Please do not reply.</p>
+                <p>© MySmartSCart - mysmartscart.in</p>
             </div>
         </div>
     </body>
@@ -144,4 +145,3 @@ function sendOTPEmail($email, $otp) {
     return sendEmailSMTP($email, $subject, $message);
 }
 ?>
-

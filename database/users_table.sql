@@ -1,4 +1,4 @@
--- Users Table for KRC Woollens
+-- Users Table for MySmartSCart
 -- This table stores user/customer information
 
 CREATE TABLE IF NOT EXISTS `users` (
@@ -24,6 +24,6 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Insert a default admin/test user (password: admin123)
 -- Password hash for 'admin123'
 INSERT INTO `users` (`first_name`, `last_name`, `email`, `phone`, `password`, `status`) VALUES
-('Admin', 'User', 'admin@krcwoollens.com', '9876543210', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 1)
+('Admin', 'User', 'admin@mysmartscart.in', '9876543210', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 1)
 ON DUPLICATE KEY UPDATE `email`=`email`;
 

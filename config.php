@@ -33,7 +33,7 @@ if (ENVIRONMENT === 'production') {
         define('DB_PASS', '');
     }
     if (!defined('DB_NAME')) {
-        define('DB_NAME', 'krcwoollen');
+        define('DB_NAME', 'mysmartscart');
     }
 }
 

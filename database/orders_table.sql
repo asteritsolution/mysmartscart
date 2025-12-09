@@ -1,4 +1,4 @@
--- Orders Table for KRC Woollens
+-- Orders Table for MySmartSCart
 -- This table stores order information
 
 CREATE TABLE IF NOT EXISTS `orders` (

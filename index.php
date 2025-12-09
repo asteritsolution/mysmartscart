@@ -15,11 +15,11 @@ if (!isset($_SESSION['wishlist'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>KRC Woollens Ranikhet - A Rehabilitation Project Since 1977</title>
+    <title>MySmartSCart - Your Smart Shopping Destination | Best Deals Online</title>
 
-    <meta name="keywords" content="KRC Woollens, Ranikhet, Army Families, Rehabilitation, Handmade Products, Woollen Items" />
-    <meta name="description" content="KRC Woollens Ranikhet - Supporting families of our brave army officers. A rehabilitation project since 1977, helping families sell their handmade woollen products.">
-    <meta name="author" content="KRC Woollens Ranikhet">
+    <meta name="keywords" content="MySmartSCart, online shopping, best deals, electronics, fashion, home decor, gadgets, affordable prices" />
+    <meta name="description" content="MySmartSCart - Your one-stop smart shopping destination. Discover amazing deals on electronics, fashion, home essentials & more. Fast delivery across India!">
+    <meta name="author" content="MySmartSCart.in">
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="assets/images/icons/favicon.png">
@@ -52,10 +52,10 @@ if (!isset($_SESSION['wishlist'])) {
     <div class="page-wrapper">
         <div class="top-notice text-white">
             <div class="container text-center">
-                <h5 class="d-inline-block mb-0">Supporting <b>Army Families</b> Since 1977</h5>
-                <a href="about.php" class="category">OUR STORY</a>
+                <h5 class="d-inline-block mb-0">🔥 <b>MEGA SALE</b> - Up to 70% OFF!</h5>
+                <a href="about.php" class="category">ABOUT US</a>
                 <a href="shop.php" class="category ml-2 mr-3">SHOP NOW</a>
-                <small>* A Rehabilitation Project</small>
+                <small>* Free Shipping on Orders ₹499+</small>
                 <button title="Close (Esc)" type="button" class="mfp-close">×</button>
             </div>
             <!-- End .container -->
@@ -134,7 +134,7 @@ if (!isset($_SESSION['wishlist'])) {
             <div class="container">
                 <section class="featured-products-section appear-animate" data-animation-name="fadeInUpShorter"
                     data-animation-delay="100">
-                    <h2 class="section-title text-center d-flex align-items-center">Featured Products
+                    <h2 class="section-title text-center d-flex align-items-center">🔥 Hot Deals
                     </h2>
 
                     <div class="owl-carousel owl-theme dots-top dots-small" data-owl-options="{

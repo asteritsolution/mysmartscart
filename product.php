@@ -140,11 +140,11 @@ if (!$product || !isset($product['name']) || empty($product['name'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title><?php echo htmlspecialchars($product['name']); ?> - KRC Woollens Ranikhet</title>
+    <title><?php echo htmlspecialchars($product['name']); ?> - MySmartSCart</title>
 
     <meta name="keywords" content="<?php echo htmlspecialchars($product['name']); ?>, <?php echo htmlspecialchars($product['category_name'] ?? ''); ?>" />
     <meta name="description" content="<?php echo htmlspecialchars(!empty($product['short_description']) ? $product['short_description'] : $product['name']); ?>">
-    <meta name="author" content="KRC Woollens Ranikhet">
+    <meta name="author" content="MySmartSCart.in">
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="assets/images/icons/favicon.png">
@@ -177,10 +177,10 @@ if (!$product || !isset($product['name']) || empty($product['name'])) {
     <div class="page-wrapper">
         <div class="top-notice text-white">
             <div class="container text-center">
-                <h5 class="d-inline-block mb-0">Supporting <b>Army Families</b> Since 1977</h5>
-                <a href="about.php" class="category">OUR STORY</a>
+                <h5 class="d-inline-block mb-0">🔥 <b>MEGA SALE</b> - Up to 70% OFF!</h5>
+                <a href="about.php" class="category">ABOUT US</a>
                 <a href="shop.php" class="category ml-2 mr-3">SHOP NOW</a>
-                <small>* A Rehabilitation Project</small>
+                <small>* Free Shipping on Orders ₹499+</small>
                 <button title="Close (Esc)" type="button" class="mfp-close">×</button>
             </div>
             <!-- End .container -->

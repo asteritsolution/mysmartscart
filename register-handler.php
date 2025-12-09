@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['register'])) {
         $_SESSION['user_id'] = $user_id;
         $_SESSION['user_name'] = $first_name . ' ' . $last_name;
         $_SESSION['user_email'] = $email;
-        $_SESSION['register_success'] = 'Registration successful! Welcome to KRC Woollens.';
+        $_SESSION['register_success'] = 'Registration successful! Welcome to MySmartSCart.';
         
         // Redirect to intended page or index
         $redirect = isset($_SESSION['redirect_after_login']) ? $_SESSION['redirect_after_login'] : 'index.php';

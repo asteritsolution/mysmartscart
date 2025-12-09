@@ -15,7 +15,7 @@ function checkAdminLogin() {
 // Check if user is admin (for now, we'll use email check)
 function isAdmin($email) {
     // Admin email
-    $admin_emails = ['admin@krcwoollens.com'];
+    $admin_emails = ['admin@mysmartscart.in'];
     return in_array($email, $admin_emails);
 }
 

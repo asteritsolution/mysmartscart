@@ -1,3 +1,7 @@
+<?php
+session_start();
+include "config.php";
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,12 +10,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>About Us - KRC Woollens | Kumaon Regimental Centre Rehabilitation Initiative</title>
+    <title>About Us - MySmartSCart | Your Trusted Online Shopping Partner</title>
 
-    <meta name="keywords" content="KRC Woollens, Kumaon Regiment, Ranikhet, War Widows, Army Families, Rehabilitation, Handmade Products" />
+    <meta name="keywords" content="MySmartSCart, about us, online shopping India, trusted ecommerce, best deals" />
     <meta name="description"
-        content="KRC Woollens is a rehabilitation initiative of Kumaon Regimental Centre supporting war widows, dependents and 400+ local artisans. Shop handmade products and become part of the legacy.">
-    <meta name="author" content="KRC Woollens Ranikhet">
+        content="Learn about MySmartSCart - Your trusted online shopping destination. We bring you the best products at unbeatable prices with fast delivery across India.">
+    <meta name="author" content="MySmartSCart.in">
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="assets/images/icons/favicon.png">
@@ -41,10 +45,10 @@
     <div class="page-wrapper">
         <div class="top-notice text-white">
             <div class="container text-center">
-                <h5 class="d-inline-block mb-0">Empowering <b>War Widows & Artisans</b> | Kumaon Regiment</h5>
-                <a href="about.php" class="category">OUR LEGACY</a>
+                <h5 class="d-inline-block mb-0">🔥 <b>MEGA SALE</b> - Up to 70% OFF!</h5>
+                <a href="about.php" class="category">ABOUT US</a>
                 <a href="shop.php" class="category ml-2 mr-3">SHOP NOW</a>
-                <small>* Supporting 400+ Families</small>
+                <small>* Free Shipping on Orders ₹499+</small>
                 <button title="Close (Esc)" type="button" class="mfp-close">×</button>
             </div><!-- End .container -->
         </div><!-- End .top-notice -->
@@ -55,7 +59,7 @@
             <div class="page-header page-header-bg"
                 style="background-image: url('assets/images/demoes/demo7/banners/banner-top.jpg');">
                 <div class="container text-left">
-                    <h1 class="font4 text-white"><span class="text-white">KUMAON REGIMENTAL CENTRE</span>REHABILITATION INITIATIVE</h1>
+                    <h1 class="font4 text-white"><span class="text-white">ABOUT</span>MYSMARTSCART</h1>
                 </div><!-- End .container -->
             </div><!-- End .page-header -->
 
@@ -70,49 +74,77 @@
 
             <div class="about-section">
                 <div class="container">
-                    <h2 class="title">ABOUT KRC WOOLLENS RANIKHET</h2>
-                    <p class="lead"><strong>A Rehabilitation Initiative of the Kumaon Regimental Centre</strong></p>
+                    <h2 class="title">WELCOME TO MYSMARTSCART</h2>
+                    <p class="lead"><strong>Your Smart Shopping Destination</strong></p>
                     
                     <p class="mb-4" style="font-size: 1.1rem; line-height: 1.8;">
-                        KRC Woollens is a dedicated rehabilitation initiative of the <strong>Kumaon Regimental Centre</strong>, 
-                        established to honour the sacrifices of the brave soldiers of the Kumaon Regiment by empowering their families. 
-                        The project provides meaningful employment and long-term sustenance to <strong>war widows and dependents</strong>, 
-                        ensuring they receive dignified support and opportunities to rebuild their lives.
+                        <strong>MySmartSCart</strong> is your one-stop online shopping destination bringing you the latest 
+                        and trendiest products at unbeatable prices. We believe that quality products should be accessible 
+                        to everyone, and that's exactly what we deliver - premium products without the premium price tag!
                     </p>
                     
                     <p class="mb-4" style="font-size: 1.1rem; line-height: 1.8;">
-                        Beyond serving the regimental fraternity, KRC Woollens has become a vital pillar of welfare for the 
-                        <strong>local community</strong>, uplifting artisans and traditional craftsmen by giving them a reliable 
-                        platform to showcase their skills and preserve their heritage.
+                        From cutting-edge electronics and stylish fashion to innovative gadgets and home essentials, 
+                        we curate the best products from around the world and bring them right to your doorstep 
+                        across India. Our mission is simple: <strong>Smart Shopping, Happy Customers!</strong>
                     </p>
 
-                    <h3 class="mt-5 mb-3"><i class="fas fa-hands-helping text-primary mr-2"></i>Our Impact</h3>
-                    <p style="font-size: 1.1rem; line-height: 1.8;">
-                        Through its expanding operations, the project indirectly supports over <strong>400+ individuals</strong>, 
-                        creating livelihood avenues for:
-                    </p>
+                    <h3 class="mt-5 mb-3"><i class="fas fa-star text-primary mr-2"></i>Why Shop With Us?</h3>
+                    
+                    <div class="row mt-4">
+                        <div class="col-md-6 col-lg-3 mb-4">
+                            <div class="text-center p-4 bg-light rounded h-100">
+                                <i class="fas fa-tags fa-3x text-primary mb-3"></i>
+                                <h5>Best Prices</h5>
+                                <p class="mb-0">Up to 70% OFF on trending products. We guarantee the best deals!</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3 mb-4">
+                            <div class="text-center p-4 bg-light rounded h-100">
+                                <i class="fas fa-shipping-fast fa-3x text-primary mb-3"></i>
+                                <h5>Fast Delivery</h5>
+                                <p class="mb-0">Quick delivery within 3-7 business days across India.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3 mb-4">
+                            <div class="text-center p-4 bg-light rounded h-100">
+                                <i class="fas fa-shield-alt fa-3x text-primary mb-3"></i>
+                                <h5>Secure Shopping</h5>
+                                <p class="mb-0">100% secure payment options. Your data is always protected.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3 mb-4">
+                            <div class="text-center p-4 bg-light rounded h-100">
+                                <i class="fas fa-headset fa-3x text-primary mb-3"></i>
+                                <h5>24/7 Support</h5>
+                                <p class="mb-0">Dedicated customer support ready to help you anytime.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="mt-5 mb-3"><i class="fas fa-box-open text-primary mr-2"></i>What We Offer</h3>
                     <ul class="list-unstyled ml-3 mb-4">
-                        <li class="mb-2"><i class="fas fa-check-circle text-primary mr-2"></i> War widows and dependents of fallen soldiers</li>
-                        <li class="mb-2"><i class="fas fa-check-circle text-primary mr-2"></i> Local workers and skilled artisans</li>
-                        <li class="mb-2"><i class="fas fa-check-circle text-primary mr-2"></i> Small vendors and suppliers</li>
-                        <li class="mb-2"><i class="fas fa-check-circle text-primary mr-2"></i> Associated cottage-industry partners</li>
-                        <li class="mb-2"><i class="fas fa-check-circle text-primary mr-2"></i> Traditional craftsmen of the region</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-primary mr-2"></i> <strong>Electronics & Gadgets</strong> - Latest tech at best prices</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-primary mr-2"></i> <strong>Fashion & Accessories</strong> - Trendy styles for everyone</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-primary mr-2"></i> <strong>Home & Kitchen</strong> - Essential items for your home</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-primary mr-2"></i> <strong>Beauty & Personal Care</strong> - Premium skincare & grooming</li>
+                        <li class="mb-2"><i class="fas fa-check-circle text-primary mr-2"></i> <strong>Sports & Fitness</strong> - Gear up for an active lifestyle</li>
                     </ul>
 
-                    <h3 class="mt-5 mb-3"><i class="fas fa-medal text-primary mr-2"></i>Our Values</h3>
+                    <h3 class="mt-5 mb-3"><i class="fas fa-heart text-primary mr-2"></i>Our Promise</h3>
                     <p style="font-size: 1.1rem; line-height: 1.8;">
-                        KRC Woollens stands as a model of <strong>compassion, resilience, and self-reliance</strong> — preserving heritage, 
-                        promoting economic stability, and nurturing a sense of collective responsibility. It continues to embody 
-                        the enduring spirit of the Kumaon Regiment: <em>Courage, Commitment, and Care</em> for its extended family.
+                        At MySmartSCart, we're committed to providing an exceptional shopping experience. 
+                        We carefully select each product to ensure quality, and we're always here to make 
+                        your shopping journey smooth and enjoyable. Your satisfaction is our top priority!
                     </p>
 
                     <div class="bg-light p-4 rounded mt-5 text-center" style="border-left: 4px solid #0066cc;">
-                        <h4 class="mb-3" style="color: #0066cc;"><i class="fas fa-heart mr-2"></i>Become Part of the Legacy</h4>
+                        <h4 class="mb-3" style="color: #0066cc;"><i class="fas fa-gift mr-2"></i>Start Shopping Today!</h4>
                         <p class="mb-4" style="font-size: 1.15rem;">
-                            <strong>By buying our products, you are becoming part of the legacy!</strong><br>
-                            Every purchase directly supports the families of our brave soldiers and helps preserve traditional craftsmanship.
+                            <strong>Discover amazing deals and exclusive offers!</strong><br>
+                            Join thousands of happy customers who shop smart with MySmartSCart.
                         </p>
-                        <a href="shop.php" class="btn btn-primary btn-lg">Shop Now & Support</a>
+                        <a href="shop.php" class="btn btn-primary btn-lg">Shop Now</a>
                         <a href="contact.php" class="btn btn-outline-primary btn-lg ml-2">Contact Us</a>
                     </div>
                 </div><!-- End .container -->
@@ -145,12 +177,6 @@
 
     <!-- Main JS File -->
     <script src="assets/js/main.min.js"></script>
-    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'9a48e16789f5e1dd',t:'MTc2NDE1NDgwOQ=='};var a=document.createElement('script');a.src='../../cdn-cgi/challenge-platform/h/b/scripts/jsd/13c98df4ef2d/maind41d.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
-    <script defer
-        src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
-        integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
-        data-cf-beacon='{"version":"2024.11.0","token":"ecd4920e43e14654b78e65dbf8311922","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}'
-        crossorigin="anonymous"></script>
 </body>
 
 </html>
