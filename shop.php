@@ -87,6 +87,9 @@ $products_result = mysqli_query($conn, $products_query);
     <!-- Main CSS File -->
     <link rel="stylesheet" href="assets/css/demo7.min.css">
     <link rel="stylesheet" type="text/css" href="assets/vendor/fontawesome-free/css/all.min.css">
+    
+    <!-- Performance Optimizations -->
+    <link rel="stylesheet" href="assets/css/optimizations.css">
 </head>
 
 <body>
@@ -518,7 +521,23 @@ $products_result = mysqli_query($conn, $products_query);
 
     <!-- Main JS File -->
     <script src="assets/js/main.min.js"></script>
-    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'9a48e1630f05e1dd',t:'MTc2NDE1NDgwOA=='};var a=document.createElement('script');a.src='../../cdn-cgi/challenge-platform/h/b/scripts/jsd/13c98df4ef2d/maind41d.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+    
+    <!-- Performance Optimizations -->
+    <script src="assets/js/optimizations.js"></script>
+    
+    <!-- Initialize Infinite Scroll -->
+    <script>
+    $(document).ready(function() {
+        // Initialize infinite scroll for shop page
+        if (typeof MSC !== 'undefined' && MSC.InfiniteScroll) {
+            MSC.InfiniteScroll.init({
+                container: '.products-group',
+                startPage: <?php echo $page; ?>,
+                hasMore: <?php echo ($page < $total_pages) ? 'true' : 'false'; ?>
+            });
+        }
+    });
+    </script>
     <script defer
         src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
         integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="

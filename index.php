@@ -46,6 +46,9 @@ if (!isset($_SESSION['wishlist'])) {
     <!-- Main CSS File -->
     <link rel="stylesheet" href="assets/css/demo7.min.css">
     <link rel="stylesheet" type="text/css" href="assets/vendor/fontawesome-free/css/all.min.css">
+    
+    <!-- Performance Optimizations -->
+    <link rel="stylesheet" href="assets/css/optimizations.css">
 </head>
 
 <body>
@@ -845,6 +848,9 @@ if (!isset($_SESSION['wishlist'])) {
 
     <!-- Main JS File -->
     <script src="assets/js/main.min.js"></script>
+    
+    <!-- Performance Optimizations -->
+    <script src="assets/js/optimizations.js"></script>
 
     <!-- Home Slider Initialization -->
     <script>
