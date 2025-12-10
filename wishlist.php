@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "config.php";
+require_once "includes/site-settings.php";
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
@@ -51,7 +52,8 @@ if (!empty($_SESSION['wishlist'])) {
     <meta name="author" content="MySmartSCart.in">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="assets/images/icons/favicon.png">
+    <?php $site_favicon = getSetting('site_favicon', 'assets/images/icons/favicon.png'); ?>
+    <link rel="icon" type="image/x-icon" href="<?php echo htmlspecialchars($site_favicon); ?>">
 
 
     <script>

@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "config.php";
+require_once "includes/site-settings.php";
 
 // Fetch contact settings from database
 $contact_query = "SELECT * FROM contact_settings ORDER BY id DESC LIMIT 1";
@@ -46,7 +47,8 @@ unset($_SESSION['contact_form_data']);
     <meta name="author" content="MySmartSCart.in">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="assets/images/icons/favicon.png">
+    <?php $site_favicon = getSetting('site_favicon', 'assets/images/icons/favicon.png'); ?>
+    <link rel="icon" type="image/x-icon" href="<?php echo htmlspecialchars($site_favicon); ?>">
 
     <script>
         WebFontConfig = {

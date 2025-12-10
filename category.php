@@ -115,6 +115,7 @@ $per_page_param = "&per_page=" . $per_page;
     if (!function_exists('getBaseUrl')) {
         require_once __DIR__ . '/includes/site-settings.php';
     }
+    $site_favicon = getSetting('site_favicon', 'assets/images/icons/favicon.png');
     ?>
     <base href="<?php echo getBaseUrl(); ?>">
 
@@ -125,7 +126,7 @@ $per_page_param = "&per_page=" . $per_page;
     <meta name="author" content="KRC Woollens Ranikhet">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="assets/images/icons/favicon.png">
+    <link rel="icon" type="image/x-icon" href="<?php echo htmlspecialchars($site_favicon); ?>">
 
     <script>
         WebFontConfig = {

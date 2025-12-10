@@ -1,7 +1,7 @@
 <?php
 // Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+session_start();
 }
 
 // If already logged in, redirect
@@ -24,7 +24,8 @@ if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
 	<meta name="author" content="MySmartSCart.in">
 
 	<!-- Favicon -->
-	<link rel="icon" type="image/x-icon" href="assets/images/icons/favicon.png">
+	<?php $site_favicon = getSetting('site_favicon', 'assets/images/icons/favicon.png'); ?>
+	<link rel="icon" type="image/x-icon" href="<?php echo htmlspecialchars($site_favicon); ?>">
 
 
 	<script>

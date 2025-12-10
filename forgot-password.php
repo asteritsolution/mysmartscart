@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "config.php";
+require_once "includes/site-settings.php";
 
 // Create password_resets table if it doesn't exist
 $create_table = "CREATE TABLE IF NOT EXISTS `password_resets` (
@@ -153,8 +154,48 @@ if ($success) {
     unset($_SESSION['password_reset_success']);
 }
 
-include "common/header.php";
+$site_favicon = getSetting('site_favicon', 'assets/images/icons/favicon.png');
 ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    <title>Forgot Password - MySmartSCart | Reset Your Password</title>
+    
+    <meta name="keywords" content="MySmartSCart, Forgot Password, Reset Password, Account Recovery" />
+    <meta name="description" content="Reset your password at MySmartSCart. Enter your email to receive a password reset OTP.">
+    <meta name="author" content="MySmartSCart.in">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="<?php echo htmlspecialchars($site_favicon); ?>">
+    
+    <script>
+        WebFontConfig = {
+            google: { families: ['Open+Sans:300,400,600,700,800', 'Poppins:300,400,500,600,700', 'Shadows+Into+Light:400'] }
+        };
+        (function (d) {
+            var wf = d.createElement('script'), s = d.scripts[0];
+            wf.src = 'assets/js/webfont.js';
+            wf.async = true;
+            s.parentNode.insertBefore(wf, s);
+        })(document);
+    </script>
+    
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="assets/css/demo7.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/vendor/fontawesome-free/css/all.min.css">
+    
+    <!-- Performance Optimizations -->
+    <link rel="stylesheet" href="assets/css/optimizations.css">
+</head>
+<body>
+<?php include "common/header.php"; ?>
 
 <main class="main">
     <div class="page-header">
@@ -301,6 +342,16 @@ include "common/header.php";
 </main>
 
 <?php include "common/footer.php"; ?>
+
+<!-- Plugins JS File -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/plugins.min.js"></script>
+
+<!-- Main JS File -->
+<script src="assets/js/main.min.js"></script>
+</body>
+</html>
 
 <script>
 // OTP input formatting
