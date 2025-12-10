@@ -180,9 +180,10 @@ FileETag None
     RewriteRule ^(.*/)?index\.php$ /mysmartscart/ [R=301,L]
     
     # Redirect .php extension to non-extension URL (301 Permanent Redirect)
-    # Exclude product.php and category.php as they have special SEO URLs
+    # Exclude product.php, category.php, and handler files (login-handler, register-handler, etc.)
     RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+(.+)\.php[\s?] [NC]
     RewriteCond %{REQUEST_URI} !^/mysmartscart/(product|category)\.php [NC]
+    RewriteCond %{REQUEST_URI} !-handler\.php$ [NC]
     RewriteRule ^(.+)\.php$ /mysmartscart/$1 [R=301,L]
     
     # =====================================================

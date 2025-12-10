@@ -30,6 +30,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $top_rated = isset($_POST['top_rated']) ? 1 : 0;
     $status = isset($_POST['status']) ? 1 : 0;
     
+    // Handle colors and sizes (comma-separated values)
+    $colors_array = [];
+    if (!empty($_POST['colors'])) {
+        $colors_input = trim($_POST['colors']);
+        $colors_array = array_filter(array_map('trim', explode(',', $colors_input)));
+    }
+    $colors_json = !empty($colors_array) ? json_encode($colors_array) : null;
+    
+    $sizes_array = [];
+    if (!empty($_POST['sizes'])) {
+        $sizes_input = trim($_POST['sizes']);
+        $sizes_array = array_filter(array_map('trim', explode(',', $sizes_input)));
+    }
+    $sizes_json = !empty($sizes_array) ? json_encode($sizes_array) : null;
+    
     // Handle image upload
     $image = 'assets/images/products/placeholder.webp';
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
@@ -43,8 +58,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     
     if (!empty($name) && $price > 0) {
-        $query = "INSERT INTO products (name, slug, sku, short_description, description, price, sale_price, stock, category_id, image, featured, best_selling, top_rated, status) 
-                  VALUES ('$name', '$slug', '$sku', '$short_description', '$description', $price, " . ($sale_price ? $sale_price : 'NULL') . ", $stock, $category_id, '$image', $featured, $best_selling, $top_rated, $status)";
+        $colors_sql = $colors_json ? "'" . mysqli_real_escape_string($conn, $colors_json) . "'" : 'NULL';
+        $sizes_sql = $sizes_json ? "'" . mysqli_real_escape_string($conn, $sizes_json) . "'" : 'NULL';
+        
+        $query = "INSERT INTO products (name, slug, sku, short_description, description, price, sale_price, stock, category_id, image, colors, sizes, featured, best_selling, top_rated, status) 
+                  VALUES ('$name', '$slug', '$sku', '$short_description', '$description', $price, " . ($sale_price ? $sale_price : 'NULL') . ", $stock, $category_id, '$image', $colors_sql, $sizes_sql, $featured, $best_selling, $top_rated, $status)";
         
         if (mysqli_query($conn, $query)) {
             $product_id = mysqli_insert_id($conn);
@@ -134,6 +152,23 @@ include 'includes/header.php';
                         <div class="form-group">
                             <label>Stock Quantity</label>
                             <input type="number" class="form-control" name="stock" value="0">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Available Colors</label>
+                            <input type="text" class="form-control" name="colors" placeholder="e.g., Black, Blue, Red, Green">
+                            <small class="form-text text-muted">Enter colors separated by commas. Leave empty if product has no color options.</small>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Available Sizes</label>
+                            <input type="text" class="form-control" name="sizes" placeholder="e.g., Small, Medium, Large, XL">
+                            <small class="form-text text-muted">Enter sizes separated by commas. Leave empty if product has no size options.</small>
                         </div>
                     </div>
                 </div>

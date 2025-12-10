@@ -24,18 +24,34 @@ elseif (isset($_SERVER['REQUEST_URI'])) {
     }
 }
 
-// Fetch product details from database
-$product = null;
-if (!empty($product_slug)) {
-    $product_query = "SELECT p.*, c.name as category_name, c.slug as category_slug 
+    // Fetch product details from database
+    $product = null;
+    if (!empty($product_slug)) {
+        $product_query = "SELECT p.*, c.name as category_name, c.slug as category_slug 
                       FROM products p 
                       LEFT JOIN categories c ON p.category_id = c.id 
                       WHERE p.slug = '$product_slug' AND p.status = 1 
                       LIMIT 1";
-    $product_result = mysqli_query($conn, $product_query);
-    
-    if (mysqli_num_rows($product_result) > 0) {
-        $product = mysqli_fetch_assoc($product_result);
+        $product_result = mysqli_query($conn, $product_query);
+        
+        if (mysqli_num_rows($product_result) > 0) {
+            $product = mysqli_fetch_assoc($product_result);
+            
+            // Parse colors and sizes from JSON
+            $product_colors = [];
+            $product_sizes = [];
+            if (!empty($product['colors'])) {
+                $colors_json = json_decode($product['colors'], true);
+                if (is_array($colors_json)) {
+                    $product_colors = $colors_json;
+                }
+            }
+            if (!empty($product['sizes'])) {
+                $sizes_json = json_decode($product['sizes'], true);
+                if (is_array($sizes_json)) {
+                    $product_sizes = $sizes_json;
+                }
+            }
         
         // Placeholder image path
         $placeholder_image = 'assets/images/products/placeholder.webp';
@@ -360,38 +376,40 @@ if (!$product || !isset($product['name']) || empty($product['name'])) {
                                 <?php } ?>
                             </ul>
 
+                            <?php if (!empty($product_colors) || !empty($product_sizes)) { ?>
                             <div class="product-filters-container">
+                                <?php if (!empty($product_colors)) { ?>
                                 <div class="product-single-filter select-custom">
                                     <label>COLOR:</label>
-                                    <select name="orderby" class="form-control">
-                                        <option value="" selected="selected">CHOOSE AN OPTION
-                                        </option>
-                                        <option value="1">BLACK</option>
-                                        <option value="2">BLUE</option>
-                                        <option value="3">INDEGO</option>
-                                        <option value="4">RIGHT-BLUE</option>
-                                        <option value="5">RED</option>
+                                    <select name="product_color" id="product-color" class="form-control">
+                                        <option value="" selected="selected">CHOOSE AN OPTION</option>
+                                        <?php foreach ($product_colors as $color) { ?>
+                                        <option value="<?php echo htmlspecialchars($color); ?>"><?php echo htmlspecialchars(strtoupper($color)); ?></option>
+                                        <?php } ?>
                                     </select>
                                 </div>
+                                <?php } ?>
 
+                                <?php if (!empty($product_sizes)) { ?>
                                 <div class="product-single-filter select-custom">
                                     <label>SIZE:</label>
-                                    <select name="orderby" class="form-control">
-                                        <option value="" selected="selected">CHOOSE AN OPTION
-                                        </option>
-                                        <option value="1">EXTRA LARGE</option>
-                                        <option value="2">LARGE</option>
-                                        <option value="3">MEDIUM</option>
-                                        <option value="4">SMALL</option>
+                                    <select name="product_size" id="product-size" class="form-control">
+                                        <option value="" selected="selected">CHOOSE AN OPTION</option>
+                                        <?php foreach ($product_sizes as $size) { ?>
+                                        <option value="<?php echo htmlspecialchars($size); ?>"><?php echo htmlspecialchars(strtoupper($size)); ?></option>
+                                        <?php } ?>
                                     </select>
                                 </div>
+                                <?php } ?>
 
+                                <?php if (!empty($product_colors) || !empty($product_sizes)) { ?>
                                 <div class="product-single-filter">
                                     <label></label>
-                                    <a class="font1 text-uppercase clear-btn" href="#">Clear</a>
+                                    <a class="font1 text-uppercase clear-btn" href="#" id="clear-filters">Clear</a>
                                 </div>
-                                <!---->
+                                <?php } ?>
                             </div>
+                            <?php } ?>
 
                             <div class="product-action">
                                 <div class="price-box product-filtered-price">
@@ -763,12 +781,22 @@ if (!$product || !isset($product['name']) || empty($product['name'])) {
     <!-- Add to Cart Handler -->
     <script>
     $(document).ready(function() {
+        // Clear filters button
+        $('#clear-filters').on('click', function(e) {
+            e.preventDefault();
+            $('#product-color, #product-size').val('');
+        });
+        
         // Handle Add to Cart button click
         $('.add-cart').on('click', function(e) {
             e.preventDefault();
             var productId = $(this).data('product-id');
             var quantityInput = $('.product-single-qty input[data-product-id="' + productId + '"]');
             var quantity = quantityInput.length > 0 ? quantityInput.val() : 1;
+            
+            // Get selected color and size
+            var selectedColor = $('#product-color').val() || '';
+            var selectedSize = $('#product-size').val() || '';
             
             if (!productId) {
                 alert('Product ID not found!');
@@ -779,9 +807,18 @@ if (!$product || !isset($product['name']) || empty($product['name'])) {
             var $btn = $(this);
             $btn.prop('disabled', true).text('Adding...');
             
-            // Add to cart via URL
+            // Add to cart via URL with color and size
             var currentUrl = window.location.href;
-            window.location.href = 'cart.php?action=add&id=' + productId + '&qty=' + quantity + '&redirect=' + encodeURIComponent(currentUrl);
+            var cartUrl = 'cart.php?action=add&id=' + productId + '&qty=' + quantity;
+            if (selectedColor) {
+                cartUrl += '&color=' + encodeURIComponent(selectedColor);
+            }
+            if (selectedSize) {
+                cartUrl += '&size=' + encodeURIComponent(selectedSize);
+            }
+            cartUrl += '&redirect=' + encodeURIComponent(currentUrl);
+            
+            window.location.href = cartUrl;
         });
     });
     </script>
