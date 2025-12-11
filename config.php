@@ -16,13 +16,13 @@ if (!defined('DB_HOST')) {
 if (ENVIRONMENT === 'production') {
     // Production (Live Server) Credentials
     if (!defined('DB_USER')) {
-        define('DB_USER', 'u282526926_krcwoollens');
+        define('DB_USER', 'u282526926_mysmartscart');
     }
     if (!defined('DB_PASS')) {
-        define('DB_PASS', '^xCKh3JmH3');
+        define('DB_PASS', 'rRPJru#1Z');
     }
     if (!defined('DB_NAME')) {
-        define('DB_NAME', 'u282526926_krcwoollens');
+        define('DB_NAME', 'u282526926_mysmartscart');
     }
 } else {
     // Development (Local) Credentials

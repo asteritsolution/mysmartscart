@@ -244,6 +244,9 @@ FileETag None
     
     # API routes (keep existing)
     RewriteRule ^api/(.*)$ api/products.php?action=$1 [L,QSA]
+    
+    # Sitemap XML - Generate automatically
+    RewriteRule ^sitemap\.xml$ sitemap-generator.php [L]
 </IfModule>
 
 # =====================================================

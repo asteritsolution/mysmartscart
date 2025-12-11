@@ -281,6 +281,9 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <a href="menu-manager.php" class="menu-item <?php echo $current_page == 'menu-manager.php' ? 'active' : ''; ?>">
                 <i class="fas fa-bars"></i> Menu Manager
             </a>
+            <a href="sitemap-generator.php" class="menu-item <?php echo $current_page == 'sitemap-generator.php' ? 'active' : ''; ?>">
+                <i class="fas fa-sitemap"></i> Sitemap Generator
+            </a>
             <a href="settings.php" class="menu-item <?php echo $current_page == 'settings.php' ? 'active' : ''; ?>">
                 <i class="fas fa-cog"></i> Contact Settings
             </a>
