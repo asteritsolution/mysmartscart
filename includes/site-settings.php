@@ -48,23 +48,24 @@ function getSiteSettings() {
     // Cache settings
     $GLOBALS['site_settings_cache'] = $settings;
     
-    return $settings;
+    // Merge with defaults to ensure all keys exist
+    return array_merge(getDefaultSettings(), $settings);
 }
 
 /**
- * Get a single setting value
+ * Get a specific setting value
  * @param string $key Setting key
  * @param mixed $default Default value if not found
  * @return mixed Setting value or default
  */
 function getSetting($key, $default = '') {
     $settings = getSiteSettings();
-    return isset($settings[$key]) && !empty($settings[$key]) ? $settings[$key] : $default;
+    return isset($settings[$key]) ? $settings[$key] : $default;
 }
 
 /**
- * Get default settings
- * @return array Default settings array
+ * Get default settings (used when database table doesn't exist)
+ * @return array Default settings
  */
 function getDefaultSettings() {
     return [
@@ -123,19 +124,25 @@ function getDefaultSettings() {
 function updateSetting($key, $value) {
     global $conn;
     
-    $key = mysqli_real_escape_string($conn, $key);
-    $value = mysqli_real_escape_string($conn, $value);
-    
-    // Check if setting exists
-    $check = mysqli_query($conn, "SELECT id FROM site_settings WHERE setting_key = '$key'");
-    
-    if (mysqli_num_rows($check) > 0) {
-        $query = "UPDATE site_settings SET setting_value = '$value' WHERE setting_key = '$key'";
-    } else {
-        $query = "INSERT INTO site_settings (setting_key, setting_value) VALUES ('$key', '$value')";
+    // Check if table exists
+    $table_check = mysqli_query($conn, "SHOW TABLES LIKE 'site_settings'");
+    if (mysqli_num_rows($table_check) == 0) {
+        return false;
     }
     
-    $result = mysqli_query($conn, $query);
+    // Check if setting exists
+    $check_query = "SELECT id FROM site_settings WHERE setting_key = '" . mysqli_real_escape_string($conn, $key) . "' LIMIT 1";
+    $check_result = mysqli_query($conn, $check_query);
+    
+    if (mysqli_num_rows($check_result) > 0) {
+        // Update existing
+        $update_query = "UPDATE site_settings SET setting_value = '" . mysqli_real_escape_string($conn, $value) . "' WHERE setting_key = '" . mysqli_real_escape_string($conn, $key) . "'";
+    } else {
+        // Insert new
+        $update_query = "INSERT INTO site_settings (setting_key, setting_value) VALUES ('" . mysqli_real_escape_string($conn, $key) . "', '" . mysqli_real_escape_string($conn, $value) . "')";
+    }
+    
+    $result = mysqli_query($conn, $update_query);
     
     // Clear cache
     $GLOBALS['site_settings_cache'] = null;
@@ -144,113 +151,92 @@ function updateSetting($key, $value) {
 }
 
 /**
- * Get header main navigation menu
- * @return array Menu items (only enabled items)
+ * Get header menu items
+ * @return array Menu items
  */
 function getHeaderMenu() {
-    $menu = getSetting('header_menu', '[]');
-    $decoded = json_decode($menu, true);
+    $menu_json = getSetting('header_menu', '[]');
+    $menu = json_decode($menu_json, true);
     
-    if (!is_array($decoded) || empty($decoded)) {
+    if (!is_array($menu) || empty($menu)) {
         // Return default menu
         return [
-            ['title' => 'Home', 'url' => 'index.php', 'icon' => '', 'target' => '_self', 'enabled' => 1],
-            ['title' => 'Shop', 'url' => 'shop.php', 'icon' => '', 'target' => '_self', 'enabled' => 1],
-            ['title' => 'About Us', 'url' => 'about.php', 'icon' => '', 'target' => '_self', 'enabled' => 1],
-            ['title' => 'Contact', 'url' => 'contact.php', 'icon' => '', 'target' => '_self', 'enabled' => 1]
+            ['title' => 'Home', 'url' => '', 'target' => '_self'],
+            ['title' => 'Shop', 'url' => 'shop', 'target' => '_self'],
+            ['title' => 'About', 'url' => 'about', 'target' => '_self'],
+            ['title' => 'Contact', 'url' => 'contact', 'target' => '_self']
         ];
     }
     
-    // Filter only enabled items
-    return array_filter($decoded, function($item) {
-        return isset($item['enabled']) ? $item['enabled'] : true;
-    });
+    return $menu;
 }
 
 /**
  * Get header top links
- * @return array Links (only enabled items)
+ * @return array Links
  */
 function getHeaderTopLinks() {
-    $links = getSetting('header_top_links', '[]');
-    $decoded = json_decode($links, true);
+    $links_json = getSetting('header_top_links', '[]');
+    $links = json_decode($links_json, true);
     
-    if (!is_array($decoded) || empty($decoded)) {
-        // Return default links
-        return [
-            ['title' => 'My Wishlist', 'url' => 'wishlist.php', 'enabled' => 1],
-            ['title' => 'About Us', 'url' => 'about.php', 'enabled' => 1],
-            ['title' => 'Contact Us', 'url' => 'contact.php', 'enabled' => 1],
-            ['title' => 'Cart', 'url' => 'cart.php', 'enabled' => 1]
-        ];
+    if (!is_array($links) || empty($links)) {
+        return [];
     }
     
-    // Filter only enabled items
-    return array_filter($decoded, function($item) {
-        return isset($item['enabled']) ? $item['enabled'] : true;
-    });
+    return $links;
 }
 
 /**
- * Get footer quick links as array
- * @return array Links array (only enabled items)
+ * Get footer quick links
+ * @return array Links
  */
 function getFooterQuickLinks() {
-    $links = getSetting('footer_quick_links', '[]');
-    $decoded = json_decode($links, true);
+    $links_json = getSetting('footer_quick_links', '[]');
+    $links = json_decode($links_json, true);
     
-    if (!is_array($decoded) || empty($decoded)) {
-        // Return default links
+    if (!is_array($links) || empty($links)) {
         return [
-            ['title' => 'About Us', 'url' => 'about', 'enabled' => 1],
-            ['title' => 'Shop All', 'url' => 'shop', 'enabled' => 1],
-            ['title' => 'Contact Us', 'url' => 'contact', 'enabled' => 1],
-            ['title' => 'My Wishlist', 'url' => 'wishlist', 'enabled' => 1],
-            ['title' => 'Shopping Cart', 'url' => 'cart', 'enabled' => 1],
-            ['title' => 'My Account', 'url' => 'dashboard', 'enabled' => 1]
+            ['title' => 'About Us', 'url' => 'about'],
+            ['title' => 'Contact', 'url' => 'contact'],
+            ['title' => 'Terms & Conditions', 'url' => 'terms-and-conditions'],
+            ['title' => 'Privacy Policy', 'url' => 'privacy-policy']
         ];
     }
     
-    // Filter only enabled items
-    return array_filter($decoded, function($item) {
-        return isset($item['enabled']) ? $item['enabled'] : true;
-    });
+    return $links;
 }
 
 /**
- * Get "Why Choose Us" items as array
- * @return array Items array (only enabled items)
+ * Get "Why Choose Us" items
+ * @return array Items
  */
 function getWhyChooseUs() {
-    $items = getSetting('footer_why_choose_us', '[]');
-    $decoded = json_decode($items, true);
+    $items_json = getSetting('footer_why_choose_us', '[]');
+    $items = json_decode($items_json, true);
     
-    if (!is_array($decoded) || empty($decoded)) {
-        // Return default items
+    if (!is_array($items) || empty($items)) {
         return [
-            ['title' => 'Best Prices', 'subtitle' => 'Up to 70% OFF', 'url' => 'shop', 'enabled' => 1],
-            ['title' => 'Fast Delivery', 'subtitle' => '3-7 Business Days', 'url' => 'shop', 'enabled' => 1],
-            ['title' => 'Secure Shopping', 'subtitle' => '100% Safe & Secure', 'url' => 'about', 'enabled' => 1]
+            ['title' => 'Free Shipping', 'icon' => 'fas fa-shipping-fast'],
+            ['title' => 'Secure Payment', 'icon' => 'fas fa-lock'],
+            ['title' => '24/7 Support', 'icon' => 'fas fa-headset']
         ];
     }
     
-    // Filter only enabled items
-    return array_filter($decoded, function($item) {
-        return isset($item['enabled']) ? $item['enabled'] : true;
-    });
+    return $items;
 }
 
 /**
- * Get copyright text with year replaced
+ * Get copyright text
  * @return string Copyright text
  */
 function getCopyrightText() {
-    $text = getSetting('footer_copyright', '© MySmartSCart {year}. All Rights Reserved.');
-    return str_replace('{year}', date('Y'), $text);
+    $copyright = getSetting('footer_copyright', '© MySmartSCart {year}. All Rights Reserved.');
+    $copyright = str_replace('{year}', date('Y'), $copyright);
+    return $copyright;
 }
 
 /**
- * Get social media links
+ * Get social links
  * @return array Social links
  */
 function getSocialLinks() {
@@ -264,22 +250,11 @@ function getSocialLinks() {
 }
 
 /**
- * Clear settings cache
- */
-function clearSettingsCache() {
-    $GLOBALS['site_settings_cache'] = null;
-}
-
-/**
  * Generate SEO-friendly product URL
  * @param string $slug Product slug
  * @return string SEO-friendly URL
  */
 function getProductUrl($slug) {
-    if (empty($slug)) {
-        return '#';
-    }
-    // SEO-friendly format: product/slug
     return 'product/' . htmlspecialchars($slug);
 }
 
@@ -289,10 +264,6 @@ function getProductUrl($slug) {
  * @return string SEO-friendly URL
  */
 function getCategoryUrl($slug) {
-    if (empty($slug)) {
-        return 'shop.php';
-    }
-    // SEO-friendly format: category/slug
     return 'category/' . htmlspecialchars($slug);
 }
 
@@ -311,50 +282,49 @@ function getShopUrl($category_slug = '') {
 
 /**
  * Get base URL for the site (fixes CSS/JS path issues with SEO-friendly URLs)
+ * Auto-detects folder path for both localhost and live server
  * @return string Base URL
  */
 function getBaseUrl() {
     $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
     $host = $_SERVER['HTTP_HOST'];
     
-    // Get the actual script path (not the rewritten path)
-    $script_name = $_SERVER['SCRIPT_NAME'];
+    // Method 1: Use SCRIPT_NAME to detect actual folder
+    $script_name = $_SERVER['SCRIPT_NAME'] ?? '';
     
-    // Remove the filename to get directory
-    $base_path = dirname($script_name);
+    // Remove filename to get directory path
+    $script_dir = dirname($script_name);
+    $script_dir = str_replace('\\', '/', $script_dir);
     
-    // Normalize path separators
-    $base_path = str_replace('\\', '/', $base_path);
+    // Method 2: Use REQUEST_URI to detect folder (more reliable for live server)
+    $request_uri = $_SERVER['REQUEST_URI'] ?? '';
+    // Remove query string
+    $request_uri = strtok($request_uri, '?');
     
-    // Handle root and current directory cases
-    if ($base_path == '/' || $base_path == '.' || empty($base_path)) {
-        $base_path = '/mysmartscart/';
-    } else {
-        // Ensure it ends with / and starts with /
-        $base_path = rtrim($base_path, '/') . '/';
-        if (substr($base_path, 0, 1) != '/') {
-            $base_path = '/' . $base_path;
+    // Extract folder name from request URI if it exists
+    $folder_name = '';
+    if (preg_match('#^/([^/]+)/#', $request_uri, $matches)) {
+        $excluded = ['adminpanel', 'assets', 'api', 'common', 'includes', 'database', 'mailing', 'sitemap.xml'];
+        if (!in_array($matches[1], $excluded)) {
+            $folder_name = $matches[1];
         }
+    }
+    
+    // If no folder detected from REQUEST_URI, try SCRIPT_NAME
+    if (empty($folder_name) && preg_match('#^/([^/]+)/#', $script_dir, $matches)) {
+        $excluded = ['adminpanel', 'assets', 'api', 'common', 'includes', 'database', 'mailing'];
+        if (!in_array($matches[1], $excluded) && $matches[1] != '.') {
+            $folder_name = $matches[1];
+        }
+    }
+    
+    // Build base path
+    if (!empty($folder_name)) {
+        $base_path = '/' . $folder_name . '/';
+    } else {
+        // Root installation
+        $base_path = '/';
     }
     
     return $protocol . '://' . $host . $base_path;
 }
-
-/**
- * Get clean URL without .php extension
- * @param string $page Page name (e.g., 'shop.php', 'about.php', 'contact')
- * @return string Clean URL
- */
-function getPageUrl($page) {
-    // Remove .php if present
-    $page = str_replace('.php', '', $page);
-    
-    // Special cases
-    if ($page == 'index' || empty($page)) {
-        return '/mysmartscart/';
-    }
-    
-    return $page;
-}
-?>
-

@@ -153,7 +153,10 @@ FileETag None
 # =====================================================
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteBase /mysmartscart/
+    # Auto-detect RewriteBase - works for both localhost and live server
+    # For localhost: /mysmartscart/
+    # For live server: / (root) or /folder-name/
+    RewriteBase /
     
     # =====================================================
     # ADMIN PANEL URL REWRITING (Allow .php extension removal)
@@ -161,30 +164,43 @@ FileETag None
     
     # Admin panel: Remove .php extension (Internal rewrite, no redirect)
     # Example: /adminpanel/dashboard -> /adminpanel/dashboard.php
-    RewriteCond %{REQUEST_URI} ^/mysmartscart/adminpanel/([a-zA-Z0-9_-]+)/?$ [NC]
+    # Works for both localhost and live server
+    RewriteCond %{REQUEST_URI} ^/.*adminpanel/([a-zA-Z0-9_-]+)/?$ [NC]
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{DOCUMENT_ROOT}/mysmartscart/adminpanel/%1.php -f
-    RewriteRule ^adminpanel/([a-zA-Z0-9_-]+)/?$ adminpanel/$1.php [L]
+    RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}\.php -f
+    RewriteRule ^(.*)adminpanel/([a-zA-Z0-9_-]+)/?$ $1adminpanel/$2.php [L]
     
     # =====================================================
     # REMOVE .PHP EXTENSION FROM URLs
     # =====================================================
     
     # Exclude adminpanel from frontend rewrite rules
-    RewriteCond %{REQUEST_URI} ^/mysmartscart/adminpanel/ [NC]
+    RewriteCond %{REQUEST_URI} /adminpanel/ [NC]
     RewriteRule ^ - [L]
     
     # Redirect index.php to root (must be first)
+    # Works for both localhost and live server
     RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+(.*/)?index\.php[\s?] [NC]
-    RewriteRule ^(.*/)?index\.php$ /mysmartscart/ [R=301,L]
+    RewriteCond %{REQUEST_URI} ^/([^/]+)/.* [NC]
+    RewriteRule ^(.*/)?index\.php$ /%1/ [R=301,L]
+    RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+(.*/)?index\.php[\s?] [NC]
+    RewriteCond %{REQUEST_URI} !^/[^/]+/ [NC]
+    RewriteRule ^(.*/)?index\.php$ / [R=301,L]
     
     # Redirect .php extension to non-extension URL (301 Permanent Redirect)
     # Exclude product.php, category.php, and handler files (login-handler, register-handler, etc.)
+    # Works for both localhost and live server
     RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+(.+)\.php[\s?] [NC]
-    RewriteCond %{REQUEST_URI} !^/mysmartscart/(product|category)\.php [NC]
+    RewriteCond %{REQUEST_URI} !/(product|category)\.php [NC]
     RewriteCond %{REQUEST_URI} !-handler\.php$ [NC]
-    RewriteRule ^(.+)\.php$ /mysmartscart/$1 [R=301,L]
+    RewriteCond %{REQUEST_URI} ^/([^/]+)/(.+)$ [NC]
+    RewriteRule ^(.+)\.php$ /%1/$2 [R=301,L]
+    RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+(.+)\.php[\s?] [NC]
+    RewriteCond %{REQUEST_URI} !/(product|category)\.php [NC]
+    RewriteCond %{REQUEST_URI} !-handler\.php$ [NC]
+    RewriteCond %{REQUEST_URI} !^/[^/]+/ [NC]
+    RewriteRule ^(.+)\.php$ /$1 [R=301,L]
     
     # =====================================================
     # REDIRECT OLD URLs TO NEW SEO-FRIENDLY URLs (301 Permanent Redirect)
@@ -192,25 +208,39 @@ FileETag None
     
     # Redirect old product URLs to new SEO-friendly format
     # product.php?slug=apple-cider-vinegar -> product/apple-cider-vinegar
+    # Works for both localhost and live server
     RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+(.*/)?product\.php\?slug=([^\s&]+) [NC]
-    RewriteRule ^(.*/)?product\.php$ /mysmartscart/product/%2? [R=301,L]
+    RewriteCond %{REQUEST_URI} ^/([^/]+)/.* [NC]
+    RewriteRule ^(.*/)?product\.php$ /%1/product/%2? [R=301,L]
+    RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+(.*/)?product\.php\?slug=([^\s&]+) [NC]
+    RewriteCond %{REQUEST_URI} !^/[^/]+/ [NC]
+    RewriteRule ^(.*/)?product\.php$ /product/%2? [R=301,L]
     
     # Redirect old category URLs to new SEO-friendly format
     # shop.php?category=electronics -> category/electronics
     RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+(.*/)?shop\.php\?category=([^\s&]+) [NC]
-    RewriteRule ^(.*/)?shop\.php$ /mysmartscart/category/%2? [R=301,L]
+    RewriteCond %{REQUEST_URI} ^/([^/]+)/.* [NC]
+    RewriteRule ^(.*/)?shop\.php$ /%1/category/%2? [R=301,L]
+    RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+(.*/)?shop\.php\?category=([^\s&]+) [NC]
+    RewriteCond %{REQUEST_URI} !^/[^/]+/ [NC]
+    RewriteRule ^(.*/)?shop\.php$ /category/%2? [R=301,L]
     
     # Redirect old category.php?slug= to new format
     # category.php?slug=electronics -> category/electronics
     RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+(.*/)?category\.php\?slug=([^\s&]+) [NC]
-    RewriteRule ^(.*/)?category\.php$ /mysmartscart/category/%2? [R=301,L]
+    RewriteCond %{REQUEST_URI} ^/([^/]+)/.* [NC]
+    RewriteRule ^(.*/)?category\.php$ /%1/category/%2? [R=301,L]
+    RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s/+(.*/)?category\.php\?slug=([^\s&]+) [NC]
+    RewriteCond %{REQUEST_URI} !^/[^/]+/ [NC]
+    RewriteRule ^(.*/)?category\.php$ /category/%2? [R=301,L]
     
     # =====================================================
     # REWRITE SEO-FRIENDLY URLs TO PHP FILES
     # =====================================================
     
     # Exclude adminpanel directory from rewriting
-    RewriteCond %{REQUEST_URI} !^/mysmartscart/adminpanel/ [NC]
+    RewriteCond %{REQUEST_URI} /adminpanel/ [NC]
+    RewriteRule ^ - [L]
     
     # Prevent rewriting for existing files and directories
     RewriteCond %{REQUEST_FILENAME} !-f
@@ -221,37 +251,49 @@ FileETag None
     
     # Product SEO-friendly URLs: product/slug
     # Example: product/apple-cider-vinegar -> product.php?slug=apple-cider-vinegar
+    # Works for both localhost and live server
+    RewriteRule ^(.*/)?product/([a-z0-9-]+)/?$ $1product.php?slug=$2 [L,QSA]
     RewriteRule ^product/([a-z0-9-]+)/?$ product.php?slug=$1 [L,QSA]
     
     # Category SEO-friendly URLs: category/slug
     # Example: category/electronics -> shop.php?category=electronics
+    RewriteRule ^(.*/)?category/([a-z0-9-]+)/?$ $1shop.php?category=$2 [L,QSA]
     RewriteRule ^category/([a-z0-9-]+)/?$ shop.php?category=$1 [L,QSA]
     
     # Shop with category: shop/category-slug
+    RewriteRule ^(.*/)?shop/([a-z0-9-]+)/?$ $1shop.php?category=$2 [L,QSA]
     RewriteRule ^shop/([a-z0-9-]+)/?$ shop.php?category=$1 [L,QSA]
     
     # Remove .php extension - Internal rewrite (no redirect)
     # Example: shop -> shop.php, about -> about.php
     # Exclude adminpanel from this rule
-    RewriteCond %{REQUEST_URI} !^/mysmartscart/adminpanel/ [NC]
+    RewriteCond %{REQUEST_URI} !/adminpanel/ [NC]
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME}\.php -f
     RewriteRule ^([^/]+)/?$ $1.php [L]
     
     # Handle root - serve index.php without showing it
-    RewriteCond %{REQUEST_URI} ^/mysmartscart/?$
+    # Works for both localhost and live server
+    RewriteCond %{REQUEST_URI} ^/([^/]+)/?$
+    RewriteCond %{DOCUMENT_ROOT}/%1/index.php -f
+    RewriteRule ^([^/]+)/?$ $1/index.php [L]
+    RewriteCond %{REQUEST_URI} ^/?$
+    RewriteCond %{DOCUMENT_ROOT}/index.php -f
     RewriteRule ^$ index.php [L]
     
     # API routes (keep existing)
     RewriteRule ^api/(.*)$ api/products.php?action=$1 [L,QSA]
     
     # Sitemap XML - Generate automatically
+    # Works for both localhost and live server
+    RewriteRule ^(.*/)?sitemap\.xml$ $1sitemap-generator.php [L]
     RewriteRule ^sitemap\.xml$ sitemap-generator.php [L]
 </IfModule>
 
 # =====================================================
 # ERROR PAGES
 # =====================================================
-ErrorDocument 404 /mysmartscart/index.php
-ErrorDocument 500 /mysmartscart/index.php
+# Auto-detect base path for error pages
+ErrorDocument 404 /index.php
+ErrorDocument 500 /index.php
 
