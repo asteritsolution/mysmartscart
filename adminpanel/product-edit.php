@@ -119,9 +119,20 @@ include 'includes/header.php';
 <div class="content-card">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h5><i class="fas fa-edit"></i> Edit Product</h5>
-        <a href="products.php" class="btn btn-outline-secondary">
-            <i class="fas fa-arrow-left"></i> Back to Products
-        </a>
+        <div>
+            <?php
+            // Get base URL for product link
+            require_once __DIR__ . '/../includes/site-settings.php';
+            $site_base_url = getBaseUrl();
+            $product_url = rtrim($site_base_url, '/') . '/product/' . htmlspecialchars($product['slug']);
+            ?>
+            <a href="<?php echo $product_url; ?>" class="btn btn-outline-success" target="_blank" title="View Product on Website">
+                <i class="fas fa-eye"></i> View Product
+            </a>
+            <a href="products.php" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Products
+            </a>
+        </div>
     </div>
     
     <?php if ($error): ?>

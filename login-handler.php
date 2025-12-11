@@ -10,6 +10,10 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 include "config.php";
+require_once "includes/site-settings.php";
+
+// Get base URL for redirects
+$base_url = getBaseUrl();
 
 // Debug mode (set to false in production)
 $debug = false; // Set to true for debugging
@@ -25,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
         while (ob_get_level()) {
             ob_end_clean();
         }
-        header("Location: /mysmartscart/login", true, 302);
+        header("Location: " . rtrim($base_url, '/') . "/login", true, 302);
         exit;
     }
     
@@ -46,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
         while (ob_get_level()) {
             ob_end_clean();
         }
-        header("Location: /mysmartscart/login", true, 302);
+        header("Location: " . rtrim($base_url, '/') . "/login", true, 302);
         exit;
     }
     
@@ -76,12 +80,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
             unset($_SESSION['login_error']);
             
             // Get redirect URL BEFORE closing session
-            $redirect = isset($_SESSION['redirect_after_login']) ? $_SESSION['redirect_after_login'] : '/mysmartscart/';
+            $redirect = isset($_SESSION['redirect_after_login']) ? $_SESSION['redirect_after_login'] : rtrim($base_url, '/');
             unset($_SESSION['redirect_after_login']);
             
-            // Ensure redirect starts with / for absolute path
-            if (substr($redirect, 0, 1) !== '/') {
-                $redirect = '/mysmartscart/' . $redirect;
+            // Ensure redirect is absolute URL
+            if (substr($redirect, 0, 4) !== 'http') {
+                // If it's a relative path, make it absolute
+                if (substr($redirect, 0, 1) !== '/') {
+                    $redirect = rtrim($base_url, '/') . '/' . $redirect;
+                } else {
+                    $redirect = rtrim($base_url, '/') . $redirect;
+                }
             }
             
             // Store session data before closing (for debug logging)

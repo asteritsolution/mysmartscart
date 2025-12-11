@@ -6,7 +6,9 @@ session_start();
 
 // If already logged in, redirect
 if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
-    header("Location: /mysmartscart/", true, 302);
+    require_once "includes/site-settings.php";
+    $base_url = getBaseUrl();
+    header("Location: " . rtrim($base_url, '/'), true, 302);
     exit;
 }
 ?>

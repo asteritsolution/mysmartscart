@@ -303,7 +303,12 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </div>
             <div>
                 <span class="text-muted">Welcome, <strong><?php echo htmlspecialchars($admin['first_name'] ?? 'Admin'); ?></strong></span>
-                <a href="/mysmartscart/" class="btn btn-sm btn-outline-primary ml-3" target="_blank">
+                <?php
+                // Auto-detect base URL for website link
+                require_once __DIR__ . '/../../includes/site-settings.php';
+                $site_base_url = getBaseUrl();
+                ?>
+                <a href="<?php echo rtrim($site_base_url, '/'); ?>" class="btn btn-sm btn-outline-primary ml-3" target="_blank">
                     <i class="fas fa-external-link-alt"></i> View Site
                 </a>
             </div>

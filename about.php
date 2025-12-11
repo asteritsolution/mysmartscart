@@ -2,6 +2,9 @@
 session_start();
 include "config.php";
 require_once "includes/site-settings.php";
+
+$site_favicon = getSetting('site_favicon', 'assets/images/icons/favicon.png');
+$site_name = getSetting('site_name', 'MySmartSCart');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -60,7 +63,7 @@ require_once "includes/site-settings.php";
             <nav aria-label="breadcrumb" class="breadcrumb-nav">
                 <div class="container">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/mysmartscart/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="<?php echo getBaseUrl(); ?>">Home</a></li>
                         <li class="breadcrumb-item active" aria-current="page">About Us</li>
                     </ol>
                 </div><!-- End .container -->

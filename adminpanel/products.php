@@ -80,12 +80,21 @@ include 'includes/header.php';
                     <td><?php echo $product['stock']; ?></td>
                     <td><?php echo $product['status'] == 1 ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-secondary">Inactive</span>'; ?></td>
                     <td>
-                        <a href="product-edit.php?id=<?php echo $product['id']; ?>" class="btn btn-sm btn-outline-primary">
+                        <?php
+                        // Get base URL for product link
+                        require_once __DIR__ . '/../includes/site-settings.php';
+                        $site_base_url = getBaseUrl();
+                        $product_url = rtrim($site_base_url, '/') . '/product/' . htmlspecialchars($product['slug']);
+                        ?>
+                        <a href="<?php echo $product_url; ?>" class="btn btn-sm btn-outline-success" target="_blank" title="View Product">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        <a href="product-edit.php?id=<?php echo $product['id']; ?>" class="btn btn-sm btn-outline-primary" title="Edit Product">
                             <i class="fas fa-edit"></i>
                         </a>
                         <a href="?delete=1&id=<?php echo $product['id']; ?>" 
                            class="btn btn-sm btn-outline-danger" 
-                           onclick="return confirm('Are you sure you want to delete this product?')">
+                           onclick="return confirm('Are you sure you want to delete this product?')" title="Delete Product">
                             <i class="fas fa-trash"></i>
                         </a>
                     </td>

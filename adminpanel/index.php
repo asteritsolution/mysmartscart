@@ -153,7 +153,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             </form>
             
             <div class="text-center mt-3">
-                <a href="/mysmartscart/" class="text-muted"><i class="fas fa-arrow-left"></i> Back to Website</a>
+                <?php
+                // Auto-detect base URL for website link
+                require_once __DIR__ . '/../includes/site-settings.php';
+                $site_base_url = getBaseUrl();
+                ?>
+                <a href="<?php echo rtrim($site_base_url, '/'); ?>" class="text-muted"><i class="fas fa-arrow-left"></i> Back to Website</a>
             </div>
         </div>
     </div>

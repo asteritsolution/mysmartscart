@@ -36,10 +36,16 @@ include "includes/header.php";
                                 <div class="card-body">
                                     <p><strong>Public Sitemap:</strong></p>
                                     <p>
-                                        <a href="../sitemap.xml" target="_blank" class="btn btn-sm btn-primary">
+                                        <?php
+                                        // Auto-detect base URL for sitemap link
+                                        require_once __DIR__ . '/../includes/site-settings.php';
+                                        $site_base_url = getBaseUrl();
+                                        $sitemap_url = rtrim($site_base_url, '/') . '/sitemap.xml';
+                                        ?>
+                                        <a href="<?php echo $sitemap_url; ?>" target="_blank" class="btn btn-sm btn-primary">
                                             <i class="fas fa-external-link-alt"></i> View Sitemap
                                         </a>
-                                        <code>http://localhost/mysmartscart/sitemap.xml</code>
+                                        <code><?php echo $sitemap_url; ?></code>
                                     </p>
                                     
                                     <hr>
